@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HackTrent – Accessibility Challenge</title>
     <meta name="description" content="HackTrent at Trent University – an accessible hackathon website.">
-    <meta name="theme-color" content="#3b1f66">
+    <meta name="theme-color" content="#2c1452">
+    <!-- Atkinson Hyperlegible: a typeface designed by the Braille Institute
+         for maximum legibility for low-vision readers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./reset.css" />
     <link rel="stylesheet" href="./styles.css" />
 </head>
@@ -16,219 +21,277 @@
     <!-- Skip link: lets keyboard and screen-reader users jump straight to the main content -->
     <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <!-- Site header with search -->
+    <!-- Sticky site header: brand, navigation, search -->
     <header class="site-header">
-        <div class="branding">
-            <h1>HackTrent</h1>
-            <p class="tagline">@ Trent University</p>
-        </div>
+        <div class="header-inner">
+            <div class="branding">
+                <span class="logo" aria-hidden="true">⬡</span>
+                <div>
+                    <p class="site-name">HackTrent</p>
+                    <p class="tagline">@ Trent University</p>
+                </div>
+            </div>
 
-        <!-- Search is a real form with a visible label, so screen readers announce it
-             and pressing Enter submits it -->
-        <form class="search" role="search" id="search-form">
-            <label for="site-search">Search this site</label>
-            <input type="search" id="site-search" name="q" placeholder="e.g. schedule" autocomplete="off">
-            <button type="submit">Search</button>
-        </form>
+            <nav class="site-nav" aria-label="Main">
+                <ul>
+                    <li><a href="#main-content" aria-current="page">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#apply">Apply</a></li>
+                    <li><a href="#schedule">Schedule</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-tools">
+                <!-- Search: a real form with a label (visually hidden here because
+                     the field is self-evident, but still announced) -->
+                <form class="search" role="search" id="search-form">
+                    <label for="site-search" class="visually-hidden">Search this site</label>
+                    <input type="search" id="site-search" name="q" placeholder="Search…" autocomplete="off">
+                    <button type="submit">Search</button>
+                </form>
+
+                <!-- Text-size controls, announced through the live region below -->
+                <div class="text-size" role="group" aria-labelledby="text-size-label">
+                    <span id="text-size-label" class="visually-hidden">Text size</span>
+                    <button type="button" id="text-smaller" aria-label="Decrease text size">A−</button>
+                    <button type="button" id="text-larger" aria-label="Increase text size">A+</button>
+                </div>
+
+                <!-- Theme toggle: aria-pressed announces on/off state -->
+                <button type="button" id="theme-toggle" class="theme-toggle"
+                        aria-pressed="false" aria-label="Switch to dark mode">
+                    <span aria-hidden="true" class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </div>
+        <p class="visually-hidden" id="text-size-status" role="status" aria-live="polite"></p>
     </header>
 
-    <!-- Navigation uses a nav landmark and real links: keyboard focusable, announced
-         as a list of 5 links by screen readers -->
-    <nav class="site-nav" aria-label="Main">
-        <ul>
-            <li><a href="#main-content" aria-current="page">Home</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#apply">Apply Now</a></li>
-            <li><a href="#schedule">Event Schedule</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+    <main id="main-content" tabindex="-1">
 
-        <!-- Text-size controls: lets low-vision users adjust type without browser zoom.
-             Changes are announced through the live region below. -->
-        <div class="text-size" role="group" aria-labelledby="text-size-label">
-            <span id="text-size-label">Text size:</span>
-            <button type="button" id="text-smaller" aria-label="Decrease text size">A−</button>
-            <button type="button" id="text-larger" aria-label="Increase text size">A+</button>
-        </div>
-        <!-- Polite live region: announces text-size changes to screen readers -->
-        <p class="visually-hidden" id="text-size-status" role="status" aria-live="polite"></p>
-    </nav>
-
-    <!-- tabindex="-1" on sections lets in-page links actually MOVE focus there,
-         so keyboard users continue from the right place -->
-    <main id="main-content" class="content" tabindex="-1">
-        <section id="about" aria-labelledby="about-heading" tabindex="-1">
-            <h2 id="about-heading">Welcome to HackTrent</h2>
-            <img src="./assets/happyHackers.JPG"
-                 alt="Students collaborating on laptops around tables at HackTrent"
-                 width="500" height="333">
-            <p>
-                HackTrent is Trent University's annual student hackathon. Over one weekend,
-                students of every skill level team up to design, build, and demo projects —
-                with workshops, mentors, free food, and prizes along the way.
-            </p>
-            <p>
-                This year's theme is <strong>building for everyone</strong>: projects are judged
-                not only on creativity and technical skill, but on how usable they are for people
-                with disabilities. No experience required — just curiosity.
-            </p>
+        <!-- Hero -->
+        <section class="hero" aria-labelledby="hero-heading">
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <p class="hero-kicker">November 14–15, 2026 · Peterborough, Ontario</p>
+                    <h1 id="hero-heading">Build for <span class="hero-accent">everyone.</span></h1>
+                    <p class="hero-lead">
+                        Trent University's annual student hackathon. One weekend,
+                        every skill level, and projects judged on how usable they
+                        are for people with disabilities.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="cta-button" href="#apply">Apply now</a>
+                        <a class="ghost-button" href="#schedule">See the schedule</a>
+                    </div>
+                </div>
+                <img class="hero-image"
+                     src="./assets/happyHackers.JPG"
+                     alt="Students collaborating on laptops around tables at HackTrent"
+                     width="500" height="333">
+            </div>
         </section>
 
-        <section id="apply" aria-labelledby="apply-heading" tabindex="-1">
-            <h2 id="apply-heading">Apply Now</h2>
-            <p>Applications are open until <time datetime="2026-11-30">November 30, 2026</time>.
-               Registration is free for all students.</p>
-
-            <!-- Accessible application form:
-                 - every field has a visible <label>
-                 - required fields are marked in the label text, not color alone
-                 - hints are tied to inputs with aria-describedby
-                 - errors appear in text next to the field AND in a summary that
-                   receives focus, with role="alert"
-                 - autocomplete tokens help autofill and cognitive accessibility -->
-            <form id="apply-form" class="apply-form" novalidate aria-labelledby="apply-form-heading">
-                <h3 id="apply-form-heading">Application form</h3>
-                <p id="required-note">Fields marked <span aria-hidden="true">*</span>
-                   <span class="visually-hidden">with an asterisk</span> are required.</p>
-
-                <div class="form-error-summary" id="error-summary" role="alert" tabindex="-1" hidden></div>
-
-                <div class="field">
-                    <label for="applicant-name">Full name <span class="req" aria-hidden="true">*</span></label>
-                    <input type="text" id="applicant-name" name="name" autocomplete="name"
-                           required aria-required="true" aria-describedby="name-error">
-                    <p class="field-error" id="name-error"></p>
+        <!-- Quick facts -->
+        <section class="facts" aria-label="Event at a glance">
+            <dl>
+                <div class="fact">
+                    <dt>Hours of hacking</dt>
+                    <dd>36</dd>
                 </div>
-
-                <div class="field">
-                    <label for="applicant-email">Email address <span class="req" aria-hidden="true">*</span></label>
-                    <input type="email" id="applicant-email" name="email" autocomplete="email"
-                           required aria-required="true" aria-describedby="email-hint email-error">
-                    <p class="field-hint" id="email-hint">We'll only use this to send event updates.</p>
-                    <p class="field-error" id="email-error"></p>
+                <div class="fact">
+                    <dt>Hackers expected</dt>
+                    <dd>300+</dd>
                 </div>
+                <div class="fact">
+                    <dt>Workshops &amp; talks</dt>
+                    <dd>12</dd>
+                </div>
+                <div class="fact">
+                    <dt>Cost to attend</dt>
+                    <dd>$0</dd>
+                </div>
+            </dl>
+        </section>
 
-                <!-- Radio group wrapped in fieldset/legend so the question is
-                     announced with each option -->
-                <fieldset class="field">
-                    <legend>Experience level</legend>
-                    <div class="radio-row">
-                        <input type="radio" id="exp-beginner" name="experience" value="beginner" checked>
-                        <label for="exp-beginner">Beginner — first hackathon</label>
+        <!-- About -->
+        <section id="about" class="band" aria-labelledby="about-heading" tabindex="-1">
+            <div class="band-inner">
+                <h2 id="about-heading">Welcome to HackTrent</h2>
+                <div class="about-grid">
+                    <div>
+                        <p>
+                            HackTrent is Trent University's annual student hackathon. Over one
+                            weekend, students of every skill level team up to design, build, and
+                            demo projects — with workshops, mentors, free food, and prizes along
+                            the way.
+                        </p>
+                        <p>
+                            This year's theme is <strong>building for everyone</strong>: projects
+                            are judged not only on creativity and technical skill, but on how
+                            usable they are for people with disabilities. No experience required —
+                            just curiosity.
+                        </p>
                     </div>
-                    <div class="radio-row">
-                        <input type="radio" id="exp-some" name="experience" value="some">
-                        <label for="exp-some">Some experience</label>
-                    </div>
-                    <div class="radio-row">
-                        <input type="radio" id="exp-pro" name="experience" value="experienced">
-                        <label for="exp-pro">Hackathon veteran</label>
-                    </div>
-                </fieldset>
+                    <article class="news-card">
+                        <h3>Latest news</h3>
+                        <!-- Decorative: the link text already names the article -->
+                        <img src="./assets/HackTrent2025.jpg" alt="" width="220" height="165">
+                        <p><a href="#image">HackTrent 2025 Recap</a></p>
+                        <p class="news-date"><time datetime="2025-11-15">November 15, 2025</time></p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-                <div class="field">
-                    <label for="accommodations">Accessibility accommodations (optional)</label>
-                    <textarea id="accommodations" name="accommodations" rows="3"
-                              aria-describedby="accommodations-hint"></textarea>
-                    <p class="field-hint" id="accommodations-hint">
-                        Tell us anything that would make the event work better for you —
-                        interpreters, dietary needs, quiet space, and so on.
+        <!-- Apply -->
+        <section id="apply" class="band band-tinted" aria-labelledby="apply-heading" tabindex="-1">
+            <div class="band-inner">
+                <h2 id="apply-heading">Apply Now</h2>
+                <p class="band-lead">Applications are open until
+                   <time datetime="2026-11-30">November 30, 2026</time>.
+                   Registration is free for all students.</p>
+
+                <!-- Accessible application form:
+                     - every field has a label
+                     - required fields marked in text, not color alone
+                     - hints tied with aria-describedby
+                     - errors appear inline AND in a focusable role="alert" summary -->
+                <form id="apply-form" class="apply-form" novalidate aria-labelledby="apply-form-heading">
+                    <h3 id="apply-form-heading">Application form</h3>
+                    <p id="required-note">Fields marked <span aria-hidden="true">*</span>
+                       <span class="visually-hidden">with an asterisk</span> are required.</p>
+
+                    <div class="form-error-summary" id="error-summary" role="alert" tabindex="-1" hidden></div>
+
+                    <div class="field">
+                        <label for="applicant-name">Full name <span class="req" aria-hidden="true">*</span></label>
+                        <input type="text" id="applicant-name" name="name" autocomplete="name"
+                               required aria-required="true" aria-describedby="name-error">
+                        <p class="field-error" id="name-error"></p>
+                    </div>
+
+                    <div class="field">
+                        <label for="applicant-email">Email address <span class="req" aria-hidden="true">*</span></label>
+                        <input type="email" id="applicant-email" name="email" autocomplete="email"
+                               required aria-required="true" aria-describedby="email-hint email-error">
+                        <p class="field-hint" id="email-hint">We'll only use this to send event updates.</p>
+                        <p class="field-error" id="email-error"></p>
+                    </div>
+
+                    <fieldset class="field">
+                        <legend>Experience level</legend>
+                        <div class="radio-row">
+                            <input type="radio" id="exp-beginner" name="experience" value="beginner" checked>
+                            <label for="exp-beginner">Beginner — first hackathon</label>
+                        </div>
+                        <div class="radio-row">
+                            <input type="radio" id="exp-some" name="experience" value="some">
+                            <label for="exp-some">Some experience</label>
+                        </div>
+                        <div class="radio-row">
+                            <input type="radio" id="exp-pro" name="experience" value="experienced">
+                            <label for="exp-pro">Hackathon veteran</label>
+                        </div>
+                    </fieldset>
+
+                    <div class="field">
+                        <label for="accommodations">Accessibility accommodations (optional)</label>
+                        <textarea id="accommodations" name="accommodations" rows="3"
+                                  aria-describedby="accommodations-hint"></textarea>
+                        <p class="field-hint" id="accommodations-hint">
+                            Tell us anything that would make the event work better for you —
+                            interpreters, dietary needs, quiet space, and so on.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="cta-button">Submit application</button>
+                    <p id="form-success" role="status" aria-live="polite" class="form-success"></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Schedule -->
+        <section id="schedule" class="band" aria-labelledby="schedule-heading" tabindex="-1">
+            <div class="band-inner">
+                <h2 id="schedule-heading">Event Schedule</h2>
+                <div class="table-wrap" tabindex="0" role="region" aria-labelledby="schedule-heading">
+                    <table>
+                        <caption>HackTrent 2026 weekend schedule</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Time</th>
+                                <th scope="col">Saturday</th>
+                                <th scope="col">Sunday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">9:00 AM</th>
+                                <td>Check-in &amp; breakfast</td>
+                                <td>Final hacking stretch</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">10:30 AM</th>
+                                <td>Opening ceremony</td>
+                                <td>Project submissions due</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1:00 PM</th>
+                                <td>Accessibility workshop</td>
+                                <td>Demos &amp; judging</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4:00 PM</th>
+                                <td>Mentor office hours</td>
+                                <td>Awards &amp; closing</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact + accessibility statement -->
+        <section id="contact" class="band band-tinted" aria-labelledby="contact-heading" tabindex="-1">
+            <div class="band-inner contact-grid">
+                <div>
+                    <h2 id="contact-heading">Contact</h2>
+                    <p>
+                        Questions? Email the organizing team at
+                        <a href="mailto:hello@hacktrent.example">hello@hacktrent.example</a>.
                     </p>
                 </div>
-
-                <button type="submit" class="cta-button">Submit application</button>
-                <p id="form-success" role="status" aria-live="polite" class="form-success"></p>
-            </form>
-        </section>
-
-        <section id="schedule" aria-labelledby="schedule-heading" tabindex="-1">
-            <h2 id="schedule-heading">Event Schedule</h2>
-            <!-- A real table with a caption and header cells, so screen readers can
-                 announce each cell with its column header -->
-            <table>
-                <caption>HackTrent 2026 weekend schedule</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">Saturday</th>
-                        <th scope="col">Sunday</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">9:00 AM</th>
-                        <td>Check-in &amp; breakfast</td>
-                        <td>Final hacking stretch</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">10:30 AM</th>
-                        <td>Opening ceremony</td>
-                        <td>Project submissions due</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">1:00 PM</th>
-                        <td>Accessibility workshop</td>
-                        <td>Demos &amp; judging</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4:00 PM</th>
-                        <td>Mentor office hours</td>
-                        <td>Awards &amp; closing</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="contact" aria-labelledby="contact-heading" tabindex="-1">
-            <h2 id="contact-heading">Contact</h2>
-            <p>
-                Questions? Email the organizing team at
-                <a href="mailto:hello@hacktrent.example">hello@hacktrent.example</a>.
-            </p>
-        </section>
-
-        <section id="accessibility" aria-labelledby="a11y-heading" tabindex="-1">
-            <h2 id="a11y-heading">Accessibility Statement</h2>
-            <p>
-                This site is built to meet <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.1
-                level AA. It works without a mouse, supports screen readers, respects your
-                system's reduced-motion and dark-mode preferences, and lets you adjust text size.
-            </p>
-            <p>
-                Found a barrier? Tell us at
-                <a href="mailto:access@hacktrent.example">access@hacktrent.example</a>
-                and we'll fix it.
-            </p>
+                <div id="accessibility" tabindex="-1">
+                    <h2 id="a11y-heading">Accessibility Statement</h2>
+                    <p>
+                        This site is built to meet
+                        <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.1 level AA.
+                        It works without a mouse, supports screen readers, respects reduced-motion
+                        and dark-mode preferences, uses the low-vision-optimized Atkinson
+                        Hyperlegible typeface, and lets you adjust text size.
+                    </p>
+                    <p>
+                        Found a barrier? Tell us at
+                        <a href="mailto:access@hacktrent.example">access@hacktrent.example</a>.
+                    </p>
+                </div>
+            </div>
         </section>
     </main>
 
-    <!-- Complementary sidebar announced as a separate landmark -->
-    <aside class="right-bar" aria-labelledby="news-heading">
-        <h2 id="news-heading">Latest News</h2>
-        <ul class="news-list">
-            <li>
-                <article class="news">
-                    <!-- Decorative here: the link text already names the article,
-                         so empty alt avoids a redundant announcement -->
-                    <img src="./assets/HackTrent2025.jpg" alt="" width="100" height="75">
-                    <div>
-                        <a href="#image">HackTrent 2025 Recap</a>
-                        <p><time datetime="2025-11-15">November 15, 2025</time></p>
-                    </div>
-                </article>
-            </li>
-        </ul>
-    </aside>
-
     <footer class="foot">
-        <p>© 2026 HackTrent. All rights reserved.</p>
-        <nav aria-label="Footer">
-            <ul class="footer-links">
-                <li><a href="#privacy">Privacy Policy</a></li>
-                <li><a href="#terms">Terms of Use</a></li>
-                <li><a href="#accessibility">Accessibility</a></li>
-            </ul>
-        </nav>
+        <div class="band-inner foot-inner">
+            <p>© 2026 HackTrent. All rights reserved.</p>
+            <nav aria-label="Footer">
+                <ul class="footer-links">
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Use</a></li>
+                    <li><a href="#accessibility">Accessibility</a></li>
+                </ul>
+            </nav>
+        </div>
     </footer>
 
     <script src="./script.js"></script>

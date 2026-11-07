@@ -1,20 +1,65 @@
 /* HackTrent — accessibility helpers
+   - Theme toggle (light/dark) with aria-pressed, persistence, system default
    - Text-size controls with screen-reader announcements + persistence
-   - Accessible form validation (error summary, inline errors, focus management)
+   - Accessible form validation (GOV.UK-style error summary + inline errors)
+   - In-page link focus management
    - Search feedback via live region
 */
 (function () {
     "use strict";
+
+    var status = document.getElementById("text-size-status");
+
+    /* ---------- Theme toggle ---------- */
+    var themeBtn = document.getElementById("theme-toggle");
+    var root = document.documentElement;
+
+    function systemPrefersDark() {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+
+    function currentIsDark() {
+        var set = root.getAttribute("data-theme");
+        if (set === "dark") return true;
+        if (set === "light") return false;
+        return systemPrefersDark();
+    }
+
+    function renderThemeButton() {
+        var dark = currentIsDark();
+        themeBtn.setAttribute("aria-pressed", String(dark));
+        themeBtn.setAttribute("aria-label",
+            dark ? "Switch to light mode" : "Switch to dark mode");
+        themeBtn.querySelector(".theme-icon").textContent = dark ? "☀️" : "🌙";
+    }
+
+    try {
+        var savedTheme = localStorage.getItem("hacktrent-theme");
+        if (savedTheme === "dark" || savedTheme === "light") {
+            root.setAttribute("data-theme", savedTheme);
+        }
+    } catch (e) { /* storage unavailable */ }
+
+    if (themeBtn) {
+        renderThemeButton();
+        themeBtn.addEventListener("click", function () {
+            var next = currentIsDark() ? "light" : "dark";
+            root.setAttribute("data-theme", next);
+            try { localStorage.setItem("hacktrent-theme", next); } catch (e) {}
+            renderThemeButton();
+            if (status) {
+                status.textContent = next === "dark"
+                    ? "Dark mode on" : "Light mode on";
+            }
+        });
+    }
 
     /* ---------- Text size ---------- */
     var size = 100;
     try {
         var saved = parseInt(localStorage.getItem("hacktrent-text-size"), 10);
         if (saved >= 80 && saved <= 150) size = saved;
-    } catch (e) { /* storage unavailable: fall back to default */ }
-
-    var root = document.documentElement;
-    var status = document.getElementById("text-size-status");
+    } catch (e) { /* storage unavailable */ }
 
     function applySize() {
         root.style.fontSize = size + "%";
@@ -39,7 +84,6 @@
         link.addEventListener("click", function () {
             var target = document.getElementById(link.getAttribute("href").slice(1));
             if (target) {
-                // Let the browser scroll first, then focus without re-scrolling
                 requestAnimationFrame(function () {
                     target.focus({ preventScroll: true });
                 });
@@ -86,7 +130,6 @@
             }
 
             if (errors.length) {
-                // Error summary: focus lands on it, each item links to its field
                 summary.hidden = false;
                 summary.innerHTML = "";
                 var heading = document.createElement("p");
