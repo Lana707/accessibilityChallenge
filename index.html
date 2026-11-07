@@ -4,37 +4,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackTrent – Accessibility Challenge</title>
-    <meta name="description" content="HackTrent at Trent University – an accessible hackathon website.">
+    <title>HackTrent 2026 – Build for everyone | Trent University</title>
+    <meta name="description" content="HackTrent is Trent University's annual student hackathon. This year, projects are judged on how usable they are for people with disabilities.">
     <meta name="theme-color" content="#2c1452">
-    <!-- Atkinson Hyperlegible: a typeface designed by the Braille Institute
-         for maximum legibility for low-vision readers -->
+    <!-- Atkinson Hyperlegible: designed by the Braille Institute for low-vision readers.
+         Fraunces: display serif, used only at large heading sizes. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./reset.css" />
     <link rel="stylesheet" href="./styles.css" />
+    <!-- Apply the saved theme before first paint so there is no flash -->
+    <script>
+        try {
+            var t = localStorage.getItem("hacktrent-theme");
+            if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {}
+    </script>
 </head>
 
 <body>
 
-    <!-- Skip link: lets keyboard and screen-reader users jump straight to the main content -->
+    <!-- Reusable icon definitions. Every icon is decorative (aria-hidden):
+         the visible or hidden text next to it carries the meaning. -->
+    <svg class="icon-defs" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/></symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3.5 2"/></symbol>
+        <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+        <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></symbol>
+        <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 11v2M13 17v2"/></symbol>
+        <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+        <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7M12 19V5"/></symbol>
+        <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5M12 16.5h.01"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m8 12.5 2.8 2.8L16.5 9.5"/></symbol>
+    </svg>
+
     <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <!-- Sticky site header: brand, navigation, search -->
     <header class="site-header">
         <div class="header-inner">
-            <div class="branding">
-                <span class="logo" aria-hidden="true">⬡</span>
-                <div>
-                    <p class="site-name">HackTrent</p>
-                    <p class="tagline">@ Trent University</p>
-                </div>
-            </div>
+            <!-- Logo links home; the SVG is decorative, the text is the name -->
+            <a class="branding" href="#top" aria-label="HackTrent, back to top">
+                <svg class="logo" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                    <path class="logo-hex" d="M24 3 42 13.5v21L24 45 6 34.5v-21Z"/>
+                    <path class="logo-mark" d="m19 18-6 6 6 6M29 18l6 6-6 6M26 15l-4 18"/>
+                </svg>
+                <span class="brand-text">
+                    <span class="site-name">HackTrent</span>
+                    <span class="tagline">@ Trent University</span>
+                </span>
+            </a>
 
             <nav class="site-nav" aria-label="Main">
                 <ul>
-                    <li><a href="#main-content" aria-current="page">Home</a></li>
+                    <li><a href="#top" aria-current="location">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#apply">Apply</a></li>
                     <li><a href="#schedule">Schedule</a></li>
@@ -43,209 +70,251 @@
             </nav>
 
             <div class="header-tools">
-                <!-- Search: a real form with a label (visually hidden here because
-                     the field is self-evident, but still announced) -->
-                <form class="search" role="search" id="search-form">
+                <form class="search" role="search" id="search-form" aria-label="Site">
                     <label for="site-search" class="visually-hidden">Search this site</label>
-                    <input type="search" id="site-search" name="q" placeholder="Search…" autocomplete="off">
-                    <button type="submit">Search</button>
+                    <input type="search" id="site-search" name="q" placeholder="Search" autocomplete="off" enterkeyhint="search">
+                    <button type="submit" class="icon-button">
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+                        <span class="visually-hidden">Search</span>
+                    </button>
                 </form>
 
-                <!-- Text-size controls, announced through the live region below -->
                 <div class="text-size" role="group" aria-labelledby="text-size-label">
                     <span id="text-size-label" class="visually-hidden">Text size</span>
-                    <button type="button" id="text-smaller" aria-label="Decrease text size">A−</button>
-                    <button type="button" id="text-larger" aria-label="Increase text size">A+</button>
+                    <button type="button" id="text-smaller"><span aria-hidden="true">A−</span><span class="visually-hidden">Smaller text</span></button>
+                    <button type="button" id="text-reset"><span aria-hidden="true">A</span><span class="visually-hidden">Reset text size</span></button>
+                    <button type="button" id="text-larger"><span aria-hidden="true">A+</span><span class="visually-hidden">Larger text</span></button>
                 </div>
 
-                <!-- Theme toggle: aria-pressed announces on/off state -->
-                <button type="button" id="theme-toggle" class="theme-toggle"
-                        aria-pressed="false" aria-label="Switch to dark mode">
-                    <span aria-hidden="true" class="theme-icon">🌙</span>
+                <!-- A real switch: name "Dark mode", state announced as on/off -->
+                <button type="button" id="theme-toggle" class="theme-switch" role="switch" aria-checked="false">
+                    <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="#i-moon"/></svg>
+                    <svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg>
+                    <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+                    <span class="visually-hidden">Dark mode</span>
                 </button>
             </div>
         </div>
-        <p class="visually-hidden" id="text-size-status" role="status" aria-live="polite"></p>
+
+        <!-- Search results panel: focus moves to its heading when results appear -->
+        <div class="search-results" id="search-results" hidden>
+            <div class="search-results-inner">
+                <h2 id="search-results-heading" tabindex="-1">Search results</h2>
+                <p id="search-results-summary"></p>
+                <ul id="search-results-list"></ul>
+                <button type="button" class="text-button" id="search-close">
+                    <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+                    Close search results
+                </button>
+            </div>
+        </div>
+
+        <p class="visually-hidden" id="announcer" role="status" aria-live="polite"></p>
     </header>
 
     <main id="main-content" tabindex="-1">
 
-        <!-- Hero -->
-        <section class="hero" aria-labelledby="hero-heading">
+        <section class="hero" id="top" aria-labelledby="hero-heading" tabindex="-1">
             <div class="hero-inner">
                 <div class="hero-copy">
-                    <p class="hero-kicker">November 14–15, 2026 · Peterborough, Ontario</p>
-                    <h1 id="hero-heading">Build for <span class="hero-accent">everyone.</span></h1>
+                    <p class="eyebrow eyebrow-light">
+                        <time datetime="2026-11-14">November 14</time>–<time datetime="2026-11-15">15, 2026</time>
+                        · Peterborough, Ontario
+                    </p>
+                    <h1 id="hero-heading">Build for <em>everyone.</em></h1>
                     <p class="hero-lead">
-                        Trent University's annual student hackathon. One weekend,
-                        every skill level, and projects judged on how usable they
-                        are for people with disabilities.
+                        Trent University's annual student hackathon. One weekend, every
+                        skill level, and projects judged on how usable they are for people
+                        with disabilities.
                     </p>
                     <div class="hero-actions">
-                        <a class="cta-button" href="#apply">Apply now</a>
-                        <a class="ghost-button" href="#schedule">See the schedule</a>
+                        <a class="button button-primary" href="#apply">
+                            Apply now
+                            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg>
+                        </a>
+                        <a class="button button-ghost" href="#schedule">See the schedule</a>
                     </div>
                 </div>
-                <img class="hero-image"
-                     src="./assets/happyHackers.JPG"
-                     alt="Students collaborating on laptops around tables at HackTrent"
-                     width="500" height="333">
+                <figure class="plate hero-plate">
+                    <img src="./assets/happyHackers.JPG"
+                         alt="Students working together on laptops around crowded tables at HackTrent"
+                         width="500" height="333">
+                    <figcaption>HackTrent 2025, Bata Library</figcaption>
+                </figure>
             </div>
         </section>
 
-        <!-- Quick facts -->
-        <section class="facts" aria-label="Event at a glance">
+        <section class="facts" aria-labelledby="facts-heading">
+            <h2 id="facts-heading" class="visually-hidden">Event at a glance</h2>
             <dl>
                 <div class="fact">
-                    <dt>Hours of hacking</dt>
+                                        <dt><svg class="icon fact-icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg> Hours of hacking</dt>
                     <dd>36</dd>
                 </div>
                 <div class="fact">
-                    <dt>Hackers expected</dt>
+                                        <dt><svg class="icon fact-icon" aria-hidden="true" focusable="false"><use href="#i-users"/></svg> Hackers expected</dt>
                     <dd>300+</dd>
                 </div>
                 <div class="fact">
-                    <dt>Workshops &amp; talks</dt>
+                                        <dt><svg class="icon fact-icon" aria-hidden="true" focusable="false"><use href="#i-mic"/></svg> Workshops and talks</dt>
                     <dd>12</dd>
                 </div>
                 <div class="fact">
-                    <dt>Cost to attend</dt>
-                    <dd>$0</dd>
+                                        <dt><svg class="icon fact-icon" aria-hidden="true" focusable="false"><use href="#i-ticket"/></svg> Cost to attend</dt>
+                    <dd>Free</dd>
                 </div>
             </dl>
         </section>
 
-        <!-- About -->
         <section id="about" class="band" aria-labelledby="about-heading" tabindex="-1">
             <div class="band-inner">
+                <p class="eyebrow">01 · About</p>
                 <h2 id="about-heading">Welcome to HackTrent</h2>
                 <div class="about-grid">
-                    <div>
+                    <div class="prose">
                         <p>
                             HackTrent is Trent University's annual student hackathon. Over one
                             weekend, students of every skill level team up to design, build, and
-                            demo projects — with workshops, mentors, free food, and prizes along
+                            demo projects, with workshops, mentors, free food, and prizes along
                             the way.
                         </p>
                         <p>
-                            This year's theme is <strong>building for everyone</strong>: projects
-                            are judged not only on creativity and technical skill, but on how
-                            usable they are for people with disabilities. No experience required —
-                            just curiosity.
+                            This year's theme is <strong>building for everyone</strong>. Projects
+                            are judged on creativity and technical skill, and on how usable they
+                            are for people with disabilities. No experience required, just
+                            curiosity.
                         </p>
+                        <ul class="check-list">
+                            <li>Beginner-friendly workshops all weekend</li>
+                            <li>Quiet room, prayer room, and gender-neutral washrooms</li>
+                            <li>ASL interpretation for opening and closing ceremonies</li>
+                            <li>Step-free access to every event space</li>
+                        </ul>
                     </div>
-                    <article class="news-card">
-                        <h3>Latest news</h3>
-                        <!-- Decorative: the link text already names the article -->
+
+                    <article class="plate news-card" aria-labelledby="news-title">
+                        <p class="eyebrow">Latest news</p>
                         <img src="./assets/HackTrent2025.jpg" alt="" width="220" height="165">
-                        <p><a href="#image">HackTrent 2025 Recap</a></p>
+                        <h3 id="news-title">HackTrent 2025 Recap</h3>
                         <p class="news-date"><time datetime="2025-11-15">November 15, 2025</time></p>
+                        <!-- Native disclosure: keyboard and screen-reader support built in -->
+                        <details>
+                            <summary>Read the recap</summary>
+                            <p>
+                                Over 250 students built 48 projects in 36 hours. The winning
+                                team made a captioning tool that turns lecture audio into
+                                live, adjustable-size subtitles.
+                            </p>
+                        </details>
                     </article>
                 </div>
             </div>
         </section>
 
-        <!-- Apply -->
         <section id="apply" class="band band-tinted" aria-labelledby="apply-heading" tabindex="-1">
-            <div class="band-inner">
-                <h2 id="apply-heading">Apply Now</h2>
-                <p class="band-lead">Applications are open until
-                   <time datetime="2026-11-30">November 30, 2026</time>.
-                   Registration is free for all students.</p>
+            <div class="band-inner apply-grid">
+                <div>
+                    <p class="eyebrow">02 · Apply</p>
+                    <h2 id="apply-heading">Apply now</h2>
+                    <p class="band-lead">Applications close
+                       <time datetime="2026-11-30">November 30, 2026</time>.
+                       Registration is free for all students.</p>
+                    <p>It takes about two minutes. You can come solo and find a team on the day.</p>
+                </div>
 
-                <!-- Accessible application form:
-                     - every field has a label
-                     - required fields marked in text, not color alone
-                     - hints tied with aria-describedby
-                     - errors appear inline AND in a focusable role="alert" summary -->
-                <form id="apply-form" class="apply-form" novalidate aria-labelledby="apply-form-heading">
+                <form id="apply-form" class="plate apply-form" novalidate aria-labelledby="apply-form-heading">
                     <h3 id="apply-form-heading">Application form</h3>
-                    <p id="required-note">Fields marked <span aria-hidden="true">*</span>
-                       <span class="visually-hidden">with an asterisk</span> are required.</p>
+                    <p class="form-note">All fields are required unless marked optional.</p>
 
                     <div class="form-error-summary" id="error-summary" role="alert" tabindex="-1" hidden></div>
 
                     <div class="field">
-                        <label for="applicant-name">Full name <span class="req" aria-hidden="true">*</span></label>
+                        <label for="applicant-name">Full name</label>
                         <input type="text" id="applicant-name" name="name" autocomplete="name"
-                               required aria-required="true" aria-describedby="name-error">
+                               required aria-describedby="name-error">
                         <p class="field-error" id="name-error"></p>
                     </div>
 
                     <div class="field">
-                        <label for="applicant-email">Email address <span class="req" aria-hidden="true">*</span></label>
-                        <input type="email" id="applicant-email" name="email" autocomplete="email"
-                               required aria-required="true" aria-describedby="email-hint email-error">
+                        <label for="applicant-email">Email address</label>
                         <p class="field-hint" id="email-hint">We'll only use this to send event updates.</p>
+                        <input type="email" id="applicant-email" name="email" autocomplete="email"
+                               inputmode="email" spellcheck="false"
+                               required aria-describedby="email-hint email-error">
                         <p class="field-error" id="email-error"></p>
                     </div>
 
                     <fieldset class="field">
                         <legend>Experience level</legend>
-                        <div class="radio-row">
+                        <div class="choice">
                             <input type="radio" id="exp-beginner" name="experience" value="beginner" checked>
-                            <label for="exp-beginner">Beginner — first hackathon</label>
+                            <label for="exp-beginner">Beginner, my first hackathon</label>
                         </div>
-                        <div class="radio-row">
+                        <div class="choice">
                             <input type="radio" id="exp-some" name="experience" value="some">
-                            <label for="exp-some">Some experience</label>
+                            <label for="exp-some">I've been to one or two</label>
                         </div>
-                        <div class="radio-row">
+                        <div class="choice">
                             <input type="radio" id="exp-pro" name="experience" value="experienced">
                             <label for="exp-pro">Hackathon veteran</label>
                         </div>
                     </fieldset>
 
                     <div class="field">
-                        <label for="accommodations">Accessibility accommodations (optional)</label>
+                        <label for="accommodations">Accessibility needs (optional)</label>
+                        <p class="field-hint" id="accommodations-hint">
+                            For example: interpreters, dietary needs, a quiet space, or mobility support.
+                        </p>
                         <textarea id="accommodations" name="accommodations" rows="3"
                                   aria-describedby="accommodations-hint"></textarea>
-                        <p class="field-hint" id="accommodations-hint">
-                            Tell us anything that would make the event work better for you —
-                            interpreters, dietary needs, quiet space, and so on.
-                        </p>
                     </div>
 
-                    <button type="submit" class="cta-button">Submit application</button>
-                    <p id="form-success" role="status" aria-live="polite" class="form-success"></p>
+                    <div class="choice field">
+                        <input type="checkbox" id="agree" name="agree" required aria-describedby="agree-error">
+                        <label for="agree">I agree to the HackTrent code of conduct</label>
+                    </div>
+                    <p class="field-error" id="agree-error"></p>
+
+                    <button type="submit" class="button button-primary">Submit application</button>
+                    <p id="form-success" role="status" class="form-success"></p>
                 </form>
             </div>
         </section>
 
-        <!-- Schedule -->
         <section id="schedule" class="band" aria-labelledby="schedule-heading" tabindex="-1">
             <div class="band-inner">
-                <h2 id="schedule-heading">Event Schedule</h2>
-                <div class="table-wrap" tabindex="0" role="region" aria-labelledby="schedule-heading">
+                <p class="eyebrow">03 · Schedule</p>
+                <h2 id="schedule-heading">Event schedule</h2>
+                <div class="plate table-wrap" tabindex="0" role="region" aria-labelledby="schedule-caption">
                     <table>
-                        <caption>HackTrent 2026 weekend schedule</caption>
+                        <caption id="schedule-caption">HackTrent 2026 weekend schedule (Eastern Time)</caption>
                         <thead>
                             <tr>
                                 <th scope="col">Time</th>
-                                <th scope="col">Saturday</th>
-                                <th scope="col">Sunday</th>
+                                <th scope="col">Saturday, Nov 14</th>
+                                <th scope="col">Sunday, Nov 15</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <th scope="row">9:00 AM</th>
-                                <td>Check-in &amp; breakfast</td>
+                                <td>Check-in and breakfast</td>
                                 <td>Final hacking stretch</td>
                             </tr>
                             <tr>
                                 <th scope="row">10:30 AM</th>
-                                <td>Opening ceremony</td>
+                                <td>Opening ceremony (ASL interpreted)</td>
                                 <td>Project submissions due</td>
                             </tr>
                             <tr>
                                 <th scope="row">1:00 PM</th>
                                 <td>Accessibility workshop</td>
-                                <td>Demos &amp; judging</td>
+                                <td>Demos and judging</td>
                             </tr>
                             <tr>
                                 <th scope="row">4:00 PM</th>
                                 <td>Mentor office hours</td>
-                                <td>Awards &amp; closing</td>
+                                <td>Awards and closing (ASL interpreted)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -253,28 +322,30 @@
             </div>
         </section>
 
-        <!-- Contact + accessibility statement -->
         <section id="contact" class="band band-tinted" aria-labelledby="contact-heading" tabindex="-1">
             <div class="band-inner contact-grid">
                 <div>
-                    <h2 id="contact-heading">Contact</h2>
-                    <p>
-                        Questions? Email the organizing team at
-                        <a href="mailto:hello@hacktrent.example">hello@hacktrent.example</a>.
-                    </p>
+                    <p class="eyebrow">04 · Contact</p>
+                    <h2 id="contact-heading">Get in touch</h2>
+                    <p>Questions about the event, sponsorship, or volunteering?</p>
+                    <a class="contact-link" href="mailto:hello@hacktrent.example">
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+                        hello@hacktrent.example
+                    </a>
                 </div>
-                <div id="accessibility" tabindex="-1">
-                    <h2 id="a11y-heading">Accessibility Statement</h2>
+                <div id="accessibility" class="plate statement" tabindex="-1" aria-labelledby="a11y-heading">
+                    <h2 id="a11y-heading">Accessibility statement</h2>
                     <p>
-                        This site is built to meet
-                        <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.1 level AA.
-                        It works without a mouse, supports screen readers, respects reduced-motion
-                        and dark-mode preferences, uses the low-vision-optimized Atkinson
-                        Hyperlegible typeface, and lets you adjust text size.
+                        This site aims to meet
+                        <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.2 level AA.
+                        You can use it with a keyboard alone or a screen reader. It follows your
+                        system's dark mode, reduced motion, and high contrast settings, and you
+                        can change the text size or theme from the header.
                     </p>
                     <p>
-                        Found a barrier? Tell us at
-                        <a href="mailto:access@hacktrent.example">access@hacktrent.example</a>.
+                        Found a barrier? Email
+                        <a href="mailto:access@hacktrent.example">access@hacktrent.example</a>
+                        and we'll reply within two business days.
                     </p>
                 </div>
             </div>
@@ -286,11 +357,20 @@
             <p>© 2026 HackTrent. All rights reserved.</p>
             <nav aria-label="Footer">
                 <ul class="footer-links">
-                    <li><a href="#privacy">Privacy Policy</a></li>
-                    <li><a href="#terms">Terms of Use</a></li>
                     <li><a href="#accessibility">Accessibility</a></li>
+                    <li><a href="#top" class="back-to-top">
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-up"/></svg>
+                        Back to top</a></li>
                 </ul>
             </nav>
+            <details class="foot-details">
+                <summary>Privacy policy</summary>
+                <p>We only collect what you type into the application form, and only to run the event. We never sell your data.</p>
+            </details>
+            <details class="foot-details">
+                <summary>Terms of use</summary>
+                <p>All participants agree to follow the HackTrent code of conduct.</p>
+            </details>
         </div>
     </footer>
 
