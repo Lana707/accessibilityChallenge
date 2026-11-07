@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    grid-template-rows: auto 1fr auto;
+}
+
+/* Top header + search bar */
+section:first-child {
+    grid-column: 1 / 4;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 25px;
+    background-color: blueviolet;
+}
+
+/* Welcome to HackTrent header */
+h2 {
+    font-size: 2em;
+    background-color: blueviolet;
+    color: purple;
+}
+
+/* Trent University tagline */
+h3 {
+    font-size: 2.1em;
+    background-color: blueviolet;
+    color: purple;
+    display: flex;
+}
+
+/* Navigation sidebar */
+section:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+    background-color: purple;
+    color: blue;
+    padding: 1em;
+}
+
+/* Search bar */
+div.search {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+/* Input field */
+div.search input {
+    background-color: aqua;
+    padding: 0.1em;
+}
+
+/* Go button */
+div.search button {
+    background: aqua;
+    font-size: 1em;
+}
+
+/* Content */
+.content {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: darkblue;
+    text-align: center;
+    padding-bottom: 1em;
+}
+
+/*Main content header in center*/
+.content h4 {
+    text-align: center;
+    font-size: 2em;
+    padding-bottom: 1em;
+}
+
+/*Content text*/
+.content p {
+    padding-top: 1em;
+}
+
+.content table {
+    color: whitesmoke;
+    padding: 1em;
+    text-align: center;
+}
+
+.content table td
+{
+    padding: 1em;
+}
+
+/* Right sidebar */
+.right-bar {
+    text-align: center;
+    padding: 1em;
+    grid-column: 3;
+    grid-row: 2;
+    background-color: aqua;
+}
+
+.right-bar p {
+    padding-bottom: 0.5em;
+    font-size: 1.1em;
+}
+
+.right-bar ul li {
+    padding-bottom: 1em;
+}
+
+/* Footer */
+.foot {
+    grid-column: 1 / 4;
+    grid-row: 3;
+    text-align: center;
+    background-color: blueviolet;
+    color: white;
+    padding: 1em;
+}
+
+/*Footer text*/
+.foot span {
+    padding: 1em;
+    color: purple;
+}
