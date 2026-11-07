@@ -103,7 +103,7 @@
         </div>
 
         <!-- Results panel: focus moves to its title, which is described by the summary -->
-        <div class="search-results" id="search-results" role="region" aria-label="Find on this page results" hidden>
+        <div class="search-results" id="search-results" role="region" aria-label="Find results" hidden>
             <div class="search-results-inner">
                 <h2 class="search-results-title" id="search-results-heading" tabindex="-1" aria-describedby="search-results-summary">Results</h2>
                 <p id="search-results-summary"></p>
@@ -125,13 +125,14 @@
                 <div class="hero-copy">
                     <p class="eyebrow eyebrow-light">
                         <time datetime="2026-11-14">November 14</time> to
-                        <time datetime="2026-11-15">15, 2026</time> · Peterborough, Ontario
+                        <time datetime="2026-11-15">November 15, 2026</time> · Bata Library, Trent University
                     </p>
                     <h1 id="hero-heading">Build for <span class="hero-accent">everyone.</span></h1>
                     <p class="hero-lead">
-                        Trent University's annual student hackathon. One weekend, every
-                        skill level, and projects judged on how usable they are for people
-                        with disabilities.
+                        Trent University's annual student hackathon: a weekend where teams
+                        design and build a project from scratch. Every skill level is welcome,
+                        and projects are judged on how usable they are for people with
+                        disabilities.
                     </p>
                     <div class="hero-actions">
                         <a class="button button-primary" href="#apply">
@@ -145,7 +146,7 @@
                     <img src="./assets/hackers.jpg"
                          alt="Students working together on laptops around crowded tables at HackTrent"
                          width="1400" height="933" fetchpriority="high" decoding="async">
-                    <figcaption>HackTrent 2025, Bata Library</figcaption>
+                    <figcaption>HackTrent 2025 in Bata Library, Trent University</figcaption>
                 </figure>
             </div>
         </section>
@@ -154,11 +155,11 @@
             <h2 id="facts-heading" class="visually-hidden">Event at a glance</h2>
             <dl>
                 <div class="fact">
-                    <dt><svg class="icon fact-icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg> Hours of hacking</dt>
-                    <dd>36</dd>
+                    <dt><svg class="icon fact-icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg> Hours of building</dt>
+                    <dd>31</dd>
                 </div>
                 <div class="fact">
-                    <dt><svg class="icon fact-icon" aria-hidden="true" focusable="false"><use href="#i-users"/></svg> Hackers expected</dt>
+                    <dt><svg class="icon fact-icon" aria-hidden="true" focusable="false"><use href="#i-users"/></svg> Students expected</dt>
                     <dd>300+</dd>
                 </div>
                 <div class="fact">
@@ -223,7 +224,7 @@
                     <p class="eyebrow"><span class="eyebrow-num" aria-hidden="true">02</span>Apply</p>
                     <h2 id="apply-heading">Apply now</h2>
                     <p class="band-lead">Applications close at 11:59 PM Eastern Time on
-                       <time datetime="2026-11-30T23:59-05:00">November 30, 2026</time>.
+                       <time datetime="2026-11-06T23:59-05:00">Friday, November 6, 2026</time>.
                        Applying is free for all students.</p>
                     <p>It takes about two minutes. You can come solo and find a team on the day.</p>
                 </div>
@@ -247,7 +248,7 @@
 
                     <div class="field">
                         <label for="applicant-email">Email address</label>
-                        <p class="field-hint" id="email-hint">We'll only use this to send event updates.</p>
+                        <p class="field-hint" id="email-hint">We'll use this to confirm your place and send event updates.</p>
                         <input type="email" id="applicant-email" name="email" autocomplete="email"
                                inputmode="email" spellcheck="false"
                                required aria-describedby="email-hint email-error">
@@ -258,15 +259,15 @@
                         <legend>Experience level</legend>
                         <div class="choice">
                             <input type="radio" id="exp-beginner" name="experience" value="beginner" checked>
-                            <label for="exp-beginner">Beginner, my first hackathon</label>
+                            <label for="exp-beginner">This is my first hackathon</label>
                         </div>
                         <div class="choice">
                             <input type="radio" id="exp-some" name="experience" value="some">
-                            <label for="exp-some">I've been to one or two</label>
+                            <label for="exp-some">I've been to one or two hackathons</label>
                         </div>
                         <div class="choice">
                             <input type="radio" id="exp-pro" name="experience" value="experienced">
-                            <label for="exp-pro">Three or more hackathons</label>
+                            <label for="exp-pro">I've been to three or more hackathons</label>
                         </div>
                     </fieldset>
 
@@ -281,7 +282,7 @@
 
                     <div class="choice field">
                         <input type="checkbox" id="agree" name="agree" required aria-describedby="agree-error">
-                        <label for="agree">I agree to the <a href="#terms">HackTrent code of conduct</a></label>
+                        <label for="agree">I agree to the <a href="#terms">HackTrent code of conduct and terms of use</a></label>
                     </div>
                     <p class="field-error" id="agree-error"></p>
 
@@ -310,11 +311,11 @@
                             <tr>
                                 <th scope="row"><time datetime="09:00">9:00 AM</time></th>
                                 <td>Check-in and breakfast</td>
-                                <td>Last hours to build</td>
+                                <td>Building continues; submissions due 10:30 AM</td>
                             </tr>
                             <tr>
                                 <th scope="row"><time datetime="10:30">10:30 AM</time></th>
-                                <td>Opening ceremony, ASL interpreted</td>
+                                <td>Opening ceremony, with American Sign Language (ASL) interpretation</td>
                                 <td>Project submissions due</td>
                             </tr>
                             <tr>
@@ -325,11 +326,12 @@
                             <tr>
                                 <th scope="row"><time datetime="16:00">4:00 PM</time></th>
                                 <td>Drop-in help from mentors</td>
-                                <td>Awards and closing, ASL interpreted</td>
+                                <td>Awards and closing, with ASL interpretation</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <p class="band-lead">The full list of 12 workshops and talks is published the week before the event.</p>
             </div>
         </section>
 
@@ -387,7 +389,7 @@
             <div class="foot-policies">
             <details class="foot-details" id="privacy">
                 <summary>Privacy policy</summary>
-                <p>We collect only what you type into the application form, and use it only to run the event: to confirm your place, send schedule updates, and arrange any accessibility needs you tell us about. We delete it within 90 days of the event and never sell or share it.</p>
+                <p>We collect only what you type into the application form. We use it to confirm your place, send schedule updates, and arrange any accessibility needs you tell us about. We delete it within 90 days of the event. We never sell or share it.</p>
             </details>
             <details class="foot-details" id="terms">
                 <summary>Code of conduct and terms of use</summary>

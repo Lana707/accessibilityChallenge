@@ -45,7 +45,7 @@ The starting site failed almost every POUR principle:
 ## 4. Understandable
 
 - `lang="en"`, descriptive `<title>`, one `<h1>`, logical H2/H3 outline, numbered sections.
-- Plain language: short sentences, consistent terms ("Apply" everywhere), abbreviations expanded on first use (ASL, WCAG), dates with timezone.
+- Plain language: short sentences, consistent terms ("Apply" for the action, "application" for the form), abbreviations expanded on first use (ASL, WCAG), dates with timezone.
 - **Forms.** Visible labels, hints tied with `aria-describedby`, `autocomplete` tokens for name and email, required state in text. On error: a focused summary ("There are 3 problems…") whose links use the *same wording* as the inline messages; `aria-invalid` on fields. On success: a status region announces it and focus returns to the form heading. `method="post"` so a no-JS submit never puts personal data in the URL.
 - Consistent navigation and identification: the same five links in the same order; `aria-current="location"` tracks the section in view.
 
@@ -65,7 +65,7 @@ The starting site failed almost every POUR principle:
 
 ## 7. Extras beyond AA
 
-- Text-size controls (80–160%) that announce and remember, independent of browser zoom.
+- Text-size controls (90–160%) that announce and remember, independent of browser zoom.
 - Find-on-page with announced result count.
 - Print stylesheet.
 - Accessibility statement with a contact address and response time.
