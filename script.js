@@ -35,7 +35,7 @@
         if (!target) return;
         var el = target.matches("h1, h2, h3, main, input, textarea, button") ? target
                : target.querySelector("h1, h2, h3") || target;
-        if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
+        if (el.tabIndex < 0) el.setAttribute("tabindex", "-1");   // never demote native focusables
         // The browser's own hash navigation can blur whatever we focus, so focus
         // after it has run (next frame) and once more shortly after as a guard.
         requestAnimationFrame(function () { el.focus({ preventScroll: true }); });
@@ -45,7 +45,7 @@
     }
 
     /* ---------- 1. Text size ---------- */
-    var MIN = 80, MAX = 160, STEP = 10;
+    var MIN = 90, MAX = 160, STEP = 10;
     var size = parseInt(read("hacktrent-text-size"), 10);
     if (isNaN(size) || size < MIN || size > MAX) size = 100;
 
@@ -101,7 +101,8 @@
             store("hacktrent-theme", next);
             renderSwitch();   // the switch's own state change is what screen readers announce
         });
-        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderSwitch);
+        var mq = window.matchMedia("(prefers-color-scheme: dark)");
+        if (mq.addEventListener) mq.addEventListener("change", renderSwitch); else if (mq.addListener) mq.addListener(renderSwitch);
     }
 
     /* ---------- 3. Navigation ---------- */
@@ -145,7 +146,8 @@
     var searchForm = document.getElementById("search-form");
     var panel = document.getElementById("search-results");
 
-    if (searchForm && panel) {
+    var searchClose = document.getElementById("search-close");
+    if (searchForm && panel && searchClose) {
         var title = document.getElementById("search-results-heading");
         var summaryEl = document.getElementById("search-results-summary");
         var list = document.getElementById("search-results-list");
@@ -153,7 +155,7 @@
 
         var pages = Array.prototype.slice.call(document.querySelectorAll("main section[id]"))
             .map(function (s) {
-                var h = s.querySelector("h1, h2");
+                var h = s.querySelector("h1, h2, h3");
                 var nav = navLinks.filter(function (a) { return a.getAttribute("href") === "#" + s.id; })[0];
                 return {
                     id: s.id,
@@ -165,6 +167,7 @@
         function closePanel(returnFocus) {
             if (panel.hidden) return;
             panel.hidden = true;
+            announce("Results closed.");
             if (returnFocus && input) input.focus();
         }
 
@@ -197,7 +200,7 @@
             title.focus();
         });
 
-        document.getElementById("search-close").addEventListener("click", function () { closePanel(true); });
+        searchClose.addEventListener("click", function () { closePanel(true); });
 
         function onEscape(e) { if (e.key === "Escape") closePanel(true); }
         panel.addEventListener("keydown", onEscape);
@@ -206,7 +209,8 @@
         // Close quietly when keyboard focus leaves the panel and the field
         panel.addEventListener("focusout", function (e) {
             var next = e.relatedTarget;
-            if (next && (panel.contains(next) || searchForm.contains(next))) return;
+            if (!next) return;   // window blur or click on empty page: keep results open
+            if (panel.contains(next) || searchForm.contains(next)) return;
             closePanel(false);
         });
     }
@@ -259,6 +263,10 @@
             if (errors.length) {
                 summary.innerHTML = "";
                 var h = document.createElement("h4");
+                h.id = "error-summary-heading";
+                h.setAttribute("tabindex", "-1");
+                summary.setAttribute("role", "group");
+                summary.setAttribute("aria-labelledby", "error-summary-heading");
                 h.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>';
                 h.appendChild(document.createTextNode(
                     "There " + (errors.length === 1 ? "is 1 problem" : "are " + errors.length + " problems") + " with your application"));
@@ -278,7 +286,7 @@
                 });
                 summary.appendChild(ul);
                 summary.hidden = false;
-                summary.focus();   // focus reads the heading and list; no live region needed
+                h.focus();   // the heading announces the count; Tab moves through the links
             } else {
                 summary.hidden = true;
                 summary.innerHTML = "";
@@ -286,8 +294,7 @@
                 success.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>';
                 success.appendChild(document.createTextNode(
                     "Application submitted. Thank you! We'll email you a confirmation."));
-                // Status region announces the message; focus returns to the form heading
-                document.getElementById("apply-form-heading").focus();
+                success.focus();   // focus reads the message; role=status is a backup
             }
         });
     }
@@ -303,6 +310,7 @@
             }
         }
         updateWrap();
-        window.addEventListener("resize", updateWrap);
+        if ("ResizeObserver" in window) new ResizeObserver(updateWrap).observe(wrap);
+        else window.addEventListener("resize", updateWrap);
     }
 })();

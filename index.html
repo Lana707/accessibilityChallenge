@@ -102,9 +102,9 @@
         </div>
 
         <!-- Results panel: focus moves to its title, which is described by the summary -->
-        <div class="search-results" id="search-results" role="region" aria-label="Find results" hidden>
+        <div class="search-results" id="search-results" role="region" aria-label="Find on this page results" hidden>
             <div class="search-results-inner">
-                <p class="search-results-title" id="search-results-heading" tabindex="-1" aria-describedby="search-results-summary">Results</p>
+                <h2 class="search-results-title" id="search-results-heading" tabindex="-1" aria-describedby="search-results-summary">Results</h2>
                 <p id="search-results-summary"></p>
                 <ul id="search-results-list"></ul>
                 <button type="button" class="text-button" id="search-close">
@@ -223,7 +223,7 @@
                     <h2 id="apply-heading">Apply now</h2>
                     <p class="band-lead">Applications close at 11:59 PM Eastern Time on
                        <time datetime="2026-11-30T23:59-05:00">November 30, 2026</time>.
-                       Registration is free for all students.</p>
+                       Applying is free for all students.</p>
                     <p>It takes about two minutes. You can come solo and find a team on the day.</p>
                 </div>
 
@@ -265,7 +265,7 @@
                         </div>
                         <div class="choice">
                             <input type="radio" id="exp-pro" name="experience" value="experienced">
-                            <label for="exp-pro">Hackathon veteran</label>
+                            <label for="exp-pro">Three or more hackathons</label>
                         </div>
                     </fieldset>
 
@@ -285,7 +285,8 @@
                     <p class="field-error" id="agree-error"></p>
 
                     <button type="submit" class="button button-primary">Submit application</button>
-                    <p id="form-success" role="status" class="form-success"></p>
+                    <p id="form-success" role="status" class="form-success" tabindex="-1"></p>
+                    <p class="form-note">Stuck? Email <a href="mailto:hello@hacktrent.ca">hello@hacktrent.ca</a> and we'll help you apply.</p>
                 </form>
             </div>
         </section>
@@ -308,11 +309,11 @@
                             <tr>
                                 <th scope="row">9:00 AM</th>
                                 <td>Check-in and breakfast</td>
-                                <td>Final hacking stretch</td>
+                                <td>Last hours to build</td>
                             </tr>
                             <tr>
                                 <th scope="row">10:30 AM</th>
-                                <td>Opening ceremony (<abbr title="American Sign Language">ASL</abbr> interpreted)</td>
+                                <td>Opening ceremony, ASL interpreted</td>
                                 <td>Project submissions due</td>
                             </tr>
                             <tr>
@@ -322,8 +323,8 @@
                             </tr>
                             <tr>
                                 <th scope="row">4:00 PM</th>
-                                <td>Mentor office hours</td>
-                                <td>Awards and closing (<abbr title="American Sign Language">ASL</abbr> interpreted)</td>
+                                <td>Drop-in help from mentors</td>
+                                <td>Awards and closing, ASL interpreted</td>
                             </tr>
                         </tbody>
                     </table>
@@ -342,7 +343,7 @@
                         hello@hacktrent.ca
                     </a>
                 </div>
-                <section id="accessibility" class="plate statement">
+                <section id="accessibility" class="plate statement" aria-labelledby="a11y-heading">
                     <h3 id="a11y-heading">Accessibility statement</h3>
                     <p>
                         This site aims to meet the Web Content Accessibility Guidelines
@@ -376,7 +377,7 @@
             <p>© 2026 HackTrent. All rights reserved.</p>
             <nav aria-label="Footer">
                 <ul class="footer-links">
-                    <li><a href="#accessibility">Accessibility</a></li>
+                    <li><a href="#accessibility">Accessibility statement</a></li>
                     <li><a href="#top" class="back-to-top">
                         <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-up"/></svg>
                         Back to top</a></li>
@@ -387,7 +388,7 @@
                 <p>We collect only what you type into the application form, and use it only to run the event: to confirm your place, send schedule updates, and arrange any accessibility needs you tell us about. We delete it within 90 days of the event and never sell or share it.</p>
             </details>
             <details class="foot-details" id="terms">
-                <summary>Terms of use and code of conduct</summary>
+                <summary>Code of conduct and terms of use</summary>
                 <p>HackTrent is a harassment-free event for everyone, regardless of disability, gender, race, religion, or experience level. Be kind, be inclusive, and respect other people's space and equipment. Organizers may remove anyone who breaks these rules. Report concerns to any organizer or email <a href="mailto:hello@hacktrent.ca">hello@hacktrent.ca</a>.</p>
             </details>
         </div>

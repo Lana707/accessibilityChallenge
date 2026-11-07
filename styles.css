@@ -19,10 +19,10 @@
     --accent: #ffc83d;         /* focus ring, highlights */
     --accent-ink: #221b2e;     /* text on accent, 12.1:1 */
     --link: #4a21a3;           /* 9.4:1 on bg */
-    --link-visited: #6b3fa0;
+    --link-visited: #64399a;
     --line: #cbbde3;
     --line-strong: #3b1f66;
-    --error: #b3261e;          /* 6.3:1 on white */
+    --error: #9e2019;          /* 7.6:1 on white (AAA) */
     --success: #1b5e20;        /* 7.9:1 on white */
     --plate-shadow: 6px 6px 0 var(--line);
     --radius: 12px;
@@ -371,14 +371,15 @@ main a:hover, .foot a:hover { text-decoration-thickness: 3px; }
     height: 0.9rem;
     border-radius: 50%;
     background: #ffffff;
-    transform: translateY(-50%);
+    transform: translate(0, -50%);
 }
 
-.theme-switch[aria-checked="true"] .switch-track { background: var(--accent); border-color: var(--accent); }
-.theme-switch[aria-checked="true"] .switch-thumb { left: 1.3rem; background: #2c1452; }
+/* State keyed off the root attribute set before first paint, so markup and
+   visual agree even before script.js runs. The moon stays in both states;
+   the track carries on/off. */
+:root[data-dark="true"] .switch-track { background: var(--accent); border-color: var(--accent); }
+:root[data-dark="true"] .switch-thumb { transform: translate(1.15rem, -50%); background: #2c1452; }
 .theme-switch .icon-sun { display: none; }
-.theme-switch[aria-checked="true"] .icon-moon { display: none; }
-.theme-switch[aria-checked="true"] .icon-sun { display: inline; }
 
 /* ---------- Search results panel ---------- */
 .search-results {
@@ -463,8 +464,8 @@ main a:hover, .foot a:hover { text-decoration-thickness: 3px; }
     font-weight: 600;
     color: var(--accent);
     text-decoration: underline wavy var(--accent);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.18em;
+    text-decoration-thickness: 0.06em;
+    text-underline-offset: 0.14em;
 }
 
 .hero-lead {
@@ -527,12 +528,24 @@ main a.button-ghost:visited {
     box-shadow: var(--plate-shadow);
 }
 
+/* The inner rule that gives plates their framed, printed feel */
+.plate::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) - 6px);
+    pointer-events: none;
+}
+
+.hero-plate::after { border-color: rgba(255, 255, 255, 0.35); }
+
 .hero-plate {
     margin: 0;
     padding: 0.7rem;
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.6);
-    box-shadow: 8px 8px 0 var(--accent-ink);
+    box-shadow: 8px 8px 0 var(--accent);
 }
 
 .hero-plate img {
@@ -728,9 +741,9 @@ details p { margin-top: 0.4rem; }
     min-height: 48px;
     padding: 0.6rem 0.8rem;
     font: inherit;
-    font-size: 1rem;
+    font-size: inherit;
     color: var(--ink);
-    background: var(--bg);
+    background: var(--surface);
     border: 2px solid var(--ink-soft);   /* 3:1+ boundary for inputs */
     border-radius: 8px;
 }
@@ -805,12 +818,12 @@ details p { margin-top: 0.4rem; }
     color: var(--success);
 }
 
-.form-success:empty { display: none; }
+.form-success:empty { margin: 0; min-height: 0; }   /* stays in the accessibility tree */
 
 /* ---------- Schedule ---------- */
 .table-wrap { overflow-x: auto; }
 
-table { width: 100%; min-width: 36rem; border-collapse: collapse; }
+table { width: 100%; min-width: 30rem; border-collapse: collapse; }
 
 caption {
     text-align: left;
@@ -831,7 +844,8 @@ thead th {
     border-top: 0;
 }
 
-tbody th { color: var(--heading); white-space: nowrap; }
+tbody th { color: var(--heading); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.fact dd { font-variant-numeric: tabular-nums lining-nums; }
 tbody tr:nth-child(even) { background: var(--surface-2); }
 
 /* ---------- Contact ---------- */
@@ -923,8 +937,9 @@ tbody tr:nth-child(even) { background: var(--surface-2); }
     .site-nav ul { gap: 0.4rem; }
     .site-nav a { padding: 0.35rem 0.75rem; }
     .header-tools { width: 100%; flex-wrap: nowrap; justify-content: center; gap: 0.4rem; }
-    .search { flex: 1 1 auto; min-width: 0; }
+    .search { flex: 1 1 100%; min-width: 0; }
     .search input { width: 100%; min-width: 0; }
+    .apply-form .button-primary { width: 100%; margin-top: 1.4rem; }
     .text-size button, .theme-switch { padding-left: 0.5rem; padding-right: 0.5rem; }
 }
 
@@ -975,7 +990,7 @@ tbody tr:nth-child(even) { background: var(--surface-2); }
     .site-header, .skip-link, .hero-actions, .foot nav, .apply-form { display: none; }
     body { background: #ffffff; color: #000000; font-size: 12pt; }
     .hero { background: none; color: #000000; padding: 0 0 1rem; }
-    .hero h1, .hero h1 em, .hero-lead, .eyebrow-light, .hero-plate figcaption { color: #000000; }
+    .hero h1, .hero-accent, .hero-lead, .eyebrow-light, .hero-plate figcaption { color: #000000; }
     .plate, .fact { box-shadow: none; border: 1px solid #000000; }
     main a[href^="mailto"]::after { content: " (" attr(href) ")"; }
 }
@@ -1113,3 +1128,9 @@ kbd {
     background: var(--surface-2);
     color: var(--ink);
 }
+
+.apply-form .button-primary { margin-top: 1.6rem; }
+
+/* The track must never be squeezed by the flex button */
+.theme-switch .switch-track { flex: 0 0 2.6rem; }
+.theme-switch .icon { flex-shrink: 0; }
