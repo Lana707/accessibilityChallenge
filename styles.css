@@ -1093,3 +1093,23 @@ main a.button-primary:focus-visible,
     .choice input[type="radio"],
     .choice input[type="checkbox"] { appearance: auto; -webkit-appearance: auto; }
 }
+
+/* ---------- Keyboard help ---------- */
+.help-list {
+    margin: 0.6rem 0 1rem;
+    padding-left: 1.3rem;
+}
+
+.help-list li { margin: 0.35rem 0; }
+
+kbd {
+    font-family: inherit;
+    font-size: 0.9em;
+    font-weight: 700;
+    padding: 0.1em 0.45em;
+    border: 1.5px solid var(--line-strong);
+    border-bottom-width: 3px;
+    border-radius: 5px;
+    background: var(--surface-2);
+    color: var(--ink);
+}
