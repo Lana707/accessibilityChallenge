@@ -78,10 +78,10 @@
             <div class="header-tools">
                 <form class="search" role="search" id="search-form" aria-label="Find on this page">
                     <label for="site-search" class="visually-hidden">Find on this page</label>
-                    <input type="search" id="site-search" name="q" placeholder="Find" autocomplete="off" enterkeyhint="search">
+                    <input type="search" id="site-search" name="q" placeholder="e.g. schedule" autocomplete="off" enterkeyhint="search">
                     <button type="submit" class="icon-button">
                         <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
-                        <span class="visually-hidden">Find</span>
+                        <span class="visually-hidden">Search this page</span>
                     </button>
                 </form>
 
@@ -103,9 +103,9 @@
         </div>
 
         <!-- Results panel: focus moves to its title, which is described by the summary -->
-        <div class="search-results" id="search-results" role="region" aria-label="Find results" hidden>
+        <div class="search-results" id="search-results" role="region" aria-labelledby="search-results-heading" hidden>
             <div class="search-results-inner">
-                <h2 class="search-results-title" id="search-results-heading" tabindex="-1" aria-describedby="search-results-summary">Results</h2>
+                <h2 class="search-results-title" id="search-results-heading" tabindex="-1" aria-describedby="search-results-summary">Find results</h2>
                 <p id="search-results-summary"></p>
                 <ul id="search-results-list"></ul>
                 <button type="button" class="text-button" id="search-close">
@@ -125,7 +125,7 @@
                 <div class="hero-copy">
                     <p class="eyebrow eyebrow-light">
                         <time datetime="2026-11-14">November 14</time> to
-                        <time datetime="2026-11-15">November 15, 2026</time> · Bata Library, Trent University
+                        <time datetime="2026-11-15">November 15, 2026</time><span aria-hidden="true"> · </span><span class="visually-hidden">, </span>Bata Library, Trent University
                     </p>
                     <h1 id="hero-heading">Build for <span class="hero-accent">everyone.</span></h1>
                     <p class="hero-lead">
@@ -175,7 +175,7 @@
 
         <section id="about" class="band" aria-labelledby="about-heading">
             <div class="band-inner">
-                <p class="eyebrow"><span class="eyebrow-num" aria-hidden="true">01</span>About</p>
+                <p class="eyebrow" aria-hidden="true"><span class="eyebrow-num">01</span>About</p>
                 <h2 id="about-heading">About HackTrent</h2>
                 <div class="about-grid">
                     <div class="prose">
@@ -194,13 +194,13 @@
                         <ul class="check-list">
                             <li>Beginner-friendly workshops all weekend</li>
                             <li>Quiet room, prayer room, and gender-neutral washrooms</li>
-                            <li>American Sign Language (<abbr title="American Sign Language">ASL</abbr>) interpretation for opening and closing ceremonies</li>
+                            <li>American Sign Language (ASL) interpretation for opening and closing ceremonies</li>
                             <li>Step-free access to every event space</li>
                         </ul>
                     </div>
 
-                    <article class="plate news-card" aria-labelledby="news-title">
-                        <p class="eyebrow">Latest news</p>
+                    <article class="plate news-card" aria-labelledby="news-eyebrow">
+                        <p class="eyebrow" id="news-eyebrow">Latest news</p>
                         <img src="./assets/recap.jpg" alt="" width="900" height="675" loading="lazy" decoding="async">
                         <h3 id="news-title">HackTrent 2025 recap</h3>
                         <p class="news-date"><time datetime="2025-11-15">November 15, 2025</time></p>
@@ -221,7 +221,7 @@
         <section id="apply" class="band band-tinted" aria-labelledby="apply-heading">
             <div class="band-inner apply-grid">
                 <div>
-                    <p class="eyebrow"><span class="eyebrow-num" aria-hidden="true">02</span>Apply</p>
+                    <p class="eyebrow" aria-hidden="true"><span class="eyebrow-num">02</span>Apply</p>
                     <h2 id="apply-heading">Apply now</h2>
                     <p class="band-lead">Applications close at 11:59 PM Eastern Time on
                        <time datetime="2026-11-06T23:59-05:00">Friday, November 6, 2026</time>.
@@ -251,7 +251,7 @@
                         <p class="field-hint" id="email-hint">We'll use this to confirm your place and send event updates.</p>
                         <input type="email" id="applicant-email" name="email" autocomplete="email"
                                inputmode="email" spellcheck="false"
-                               required aria-describedby="email-hint email-error">
+                               required aria-describedby="email-error email-hint">
                         <p class="field-error" id="email-error"></p>
                     </div>
 
@@ -287,7 +287,7 @@
                     <p class="field-error" id="agree-error"></p>
 
                     <button type="submit" class="button button-primary">Submit application</button>
-                    <p id="form-success" role="status" class="form-success" tabindex="-1"></p>
+                    <p id="form-success" class="form-success" tabindex="-1"></p>
                     <p class="form-note">Stuck? Email <a href="mailto:hello@hacktrent.ca">hello@hacktrent.ca</a> and we'll help you apply.</p>
                 </form>
             </div>
@@ -295,9 +295,9 @@
 
         <section id="schedule" class="band" aria-labelledby="schedule-heading">
             <div class="band-inner">
-                <p class="eyebrow"><span class="eyebrow-num" aria-hidden="true">03</span>Schedule</p>
+                <p class="eyebrow" aria-hidden="true"><span class="eyebrow-num">03</span>Schedule</p>
                 <h2 id="schedule-heading">Event schedule</h2>
-                <div class="plate table-wrap" id="schedule-table" role="region" aria-labelledby="schedule-caption">
+                <div class="plate table-wrap" id="schedule-table">
                     <table>
                         <caption id="schedule-caption">HackTrent 2026 weekend schedule (Eastern Time)</caption>
                         <thead>
@@ -338,7 +338,7 @@
         <section id="contact" class="band band-tinted" aria-labelledby="contact-heading">
             <div class="band-inner contact-grid">
                 <div>
-                    <p class="eyebrow"><span class="eyebrow-num" aria-hidden="true">04</span>Contact</p>
+                    <p class="eyebrow" aria-hidden="true"><span class="eyebrow-num">04</span>Contact</p>
                     <h2 id="contact-heading">Get in touch</h2>
                     <p>Questions about the event, sponsorship, or volunteering?</p>
                     <a class="contact-link" href="mailto:hello@hacktrent.ca">
@@ -350,7 +350,7 @@
                     <h3 id="a11y-heading">Accessibility statement</h3>
                     <p>
                         This site aims to meet the Web Content Accessibility Guidelines
-                        (<abbr title="Web Content Accessibility Guidelines">WCAG</abbr>) 2.2 at level AA.
+                        (WCAG) 2.2 at level AA.
                         You can use it with a keyboard alone or a screen reader. It follows your
                         system's dark mode, reduced motion, and high contrast settings, and you
                         can change the text size or theme from the header.
@@ -394,6 +394,7 @@
             <details class="foot-details" id="terms">
                 <summary>Code of conduct and terms of use</summary>
                 <p>HackTrent is a harassment-free event for everyone, regardless of disability, gender, race, religion, or experience level. Be kind, be inclusive, and respect other people's space and equipment. Organizers may remove anyone who breaks these rules. Report concerns to any organizer or email <a href="mailto:hello@hacktrent.ca">hello@hacktrent.ca</a>.</p>
+                <p><a href="#agree">Back to the application form</a></p>
             </details>
             </div>
         </div>

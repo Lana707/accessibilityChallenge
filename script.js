@@ -66,7 +66,10 @@
     function bindSize(el, delta) {
         if (!el) return;
         el.addEventListener("click", function () {
-            if (el.getAttribute("aria-disabled") === "true") return;
+            if (el.getAttribute("aria-disabled") === "true") {
+                announce((delta > 0 ? "Already at the largest text size, " : "Already at the smallest text size, ") + size + " percent");
+                return;
+            }
             size = delta === 0 ? 100 : Math.min(MAX, Math.max(MIN, size + delta));
             applySize(true);
         });
@@ -153,21 +156,21 @@
         var list = document.getElementById("search-results-list");
         var input = document.getElementById("site-search");
 
-        var pages = Array.prototype.slice.call(document.querySelectorAll("main section[id]"))
+        var pages = Array.prototype.slice.call(document.querySelectorAll("main > section[id]"))
             .map(function (s) {
                 var h = s.querySelector("h1, h2, h3");
                 var nav = navLinks.filter(function (a) { return a.getAttribute("href") === "#" + s.id; })[0];
                 return {
                     id: s.id,
-                    title: nav ? nav.textContent.trim() : (h ? h.textContent.trim() : s.id),
+                    title: h ? h.textContent.trim() : (nav ? nav.textContent.trim() : s.id),
                     text: s.textContent.toLowerCase()
                 };
             });
 
-        function closePanel(returnFocus) {
+        function closePanel(returnFocus, silent) {
             if (panel.hidden) return;
             panel.hidden = true;
-            announce("Results closed.");
+            if (!silent) announce("Results closed.");
             if (returnFocus && input) input.focus();
         }
 
@@ -187,7 +190,7 @@
                 a.href = "#" + p.id;
                 a.textContent = p.title;
                 a.addEventListener("click", function () {
-                    closePanel(false);
+                    closePanel(false, true);
                     focusTarget(document.getElementById(p.id));
                 });
                 li.appendChild(a);
@@ -211,7 +214,7 @@
             var next = e.relatedTarget;
             if (!next) return;   // window blur or click on empty page: keep results open
             if (panel.contains(next) || searchForm.contains(next)) return;
-            closePanel(false);
+            closePanel(false, true);
         });
     }
 
@@ -265,8 +268,6 @@
                 var h = document.createElement("h4");
                 h.id = "error-summary-heading";
                 h.setAttribute("tabindex", "-1");
-                summary.setAttribute("role", "group");
-                summary.setAttribute("aria-labelledby", "error-summary-heading");
                 h.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>';
                 h.appendChild(document.createTextNode(
                     "There " + (errors.length === 1 ? "is 1 problem" : "are " + errors.length + " problems") + " with your application"));
@@ -305,8 +306,12 @@
         function updateWrap() {
             if (wrap.scrollWidth > wrap.clientWidth + 1) {
                 wrap.setAttribute("tabindex", "0");
+                wrap.setAttribute("role", "region");
+                wrap.setAttribute("aria-labelledby", "schedule-caption");
             } else {
                 wrap.removeAttribute("tabindex");
+                wrap.removeAttribute("role");
+                wrap.removeAttribute("aria-labelledby");
             }
         }
         updateWrap();
