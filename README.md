@@ -2,7 +2,9 @@
 
 A one-page hackathon site rebuilt from the deliberately broken starter so that it works for everyone. That includes keyboard-only users, screen-reader users, people with low vision or colour-blindness, people who need large text, reduced motion or high contrast, and people on slow connections.
 
-**Live check:** open `index.html` in any browser, or serve the folder:
+**Live site:** https://mangokrish.github.io/accessibilityChallenge/
+
+**Run locally:** open `index.html` in any browser, or serve the folder:
 
 ```
 python3 -m http.server 8000
