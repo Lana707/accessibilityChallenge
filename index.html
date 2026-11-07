@@ -1,75 +1,167 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accessbility Challenge</title>
-    <link rel="stylesheet" href="/reset.css" />
-    <link rel="stylesheet" href="/styles.css" />
+    <title>HackTrent – Accessibility Challenge</title>
+    <meta name="description" content="HackTrent at Trent University – an accessible hackathon website.">
+    <link rel="stylesheet" href="./reset.css" />
+    <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
 
-    <!-- Top header + Search bar-->
-    <section>
-        <div>
-            <h2>HackTrent</h2>
-            <h3><i>@ Trent University</i></h3>
+    <!-- Skip link: lets keyboard and screen-reader users jump straight to the main content -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <!-- Site header with search -->
+    <header class="site-header">
+        <div class="branding">
+            <h1>HackTrent</h1>
+            <p class="tagline">@ Trent University</p>
         </div>
-        <div class="search"><b>Search:</b><input type="url" placeholder="Search..."><button> Go</button></div>
-    </section>
 
+        <!-- Search is a real form with a visible label, so screen readers announce it
+             and pressing Enter submits it -->
+        <form class="search" role="search" action="#" method="get">
+            <label for="site-search">Search this site</label>
+            <input type="search" id="site-search" name="q" placeholder="e.g. schedule" autocomplete="off">
+            <button type="submit">Search</button>
+        </form>
+    </header>
 
-    <section>
-        <div onclick="location.href='#home'">Home</div>
-        <div onclick="location.href='#about'">About Us</div>
-        <div onclick="location.href='#apply'">Apply Now</div>
-        <div onclick="location.href='#schedule'">Event Schedule</div>
-        <div onclick="location.href='#contact'">Contact</div>
-    </section>
-
-    <section class="content">
-        <div>
-            <h4>Main content</h4>
-            <img src="/assets/happyHackers.JPG" width="500px">
-            <p>lorem ipsum dolor sit amet consectetur adipiscing elit proident sunt placeat est quos incididunt amet
-                blanditiis et est deserunt ut laboris qui eum cum nam fugiat placeat sunt quo consequat dolore nisi
-                ullamco et sunt deserunt veniam reprehenderit et imperdiet cillum eum possimus quas at fugiat eiusmod
-                cumque voluptas dolor</p>
-
-            <br>
-            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim id est laborum."
-
-                
-            </p>
-
-
-    <section class="right-bar">
-        <p> this is the right content</p>
+    <!-- Navigation uses a nav landmark and real links: keyboard focusable, announced
+         as a list of 5 links by screen readers -->
+    <nav class="site-nav" aria-label="Main navigation">
         <ul>
+            <li><a href="#main-content" aria-current="page">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#apply">Apply Now</a></li>
+            <li><a href="#schedule">Event Schedule</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
 
+        <!-- Text-size controls: lets low-vision users adjust type without the browser zoom -->
+        <div class="text-size" role="group" aria-label="Text size">
+            <span aria-hidden="true">Text size:</span>
+            <button type="button" id="text-smaller" aria-label="Decrease text size">A−</button>
+            <button type="button" id="text-larger" aria-label="Increase text size">A+</button>
+        </div>
+    </nav>
+
+    <main id="main-content" class="content">
+        <section id="about" aria-labelledby="about-heading">
+            <h2 id="about-heading">Welcome to HackTrent</h2>
+            <img src="./assets/happyHackers.JPG"
+                 alt="A group of smiling hackathon participants posing together at HackTrent"
+                 width="500" height="333">
+            <p>
+                HackTrent is Trent University's annual student hackathon. Over one weekend,
+                students of every skill level team up to design, build, and demo projects —
+                with workshops, mentors, free food, and prizes along the way.
+            </p>
+            <p>
+                This year's theme is <strong>building for everyone</strong>: projects are judged
+                not only on creativity and technical skill, but on how usable they are for people
+                with disabilities. No experience required — just curiosity.
+            </p>
+        </section>
+
+        <section id="apply" aria-labelledby="apply-heading">
+            <h2 id="apply-heading">Apply Now</h2>
+            <p>Applications are open until November 30, 2026. Registration is free for all students.</p>
+            <a class="cta-button" href="#apply-form">Apply to HackTrent 2026</a>
+        </section>
+
+        <section id="schedule" aria-labelledby="schedule-heading">
+            <h2 id="schedule-heading">Event Schedule</h2>
+            <!-- A real table with a caption and header cells, so screen readers can
+                 announce each cell with its column header -->
+            <table>
+                <caption>HackTrent 2026 weekend schedule</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Time</th>
+                        <th scope="col">Saturday</th>
+                        <th scope="col">Sunday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">9:00 AM</th>
+                        <td>Check-in &amp; breakfast</td>
+                        <td>Final hacking stretch</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">10:30 AM</th>
+                        <td>Opening ceremony</td>
+                        <td>Project submissions due</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1:00 PM</th>
+                        <td>Accessibility workshop</td>
+                        <td>Demos &amp; judging</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4:00 PM</th>
+                        <td>Mentor office hours</td>
+                        <td>Awards &amp; closing</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="contact" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Contact</h2>
+            <p>
+                Questions? Email the organizing team at
+                <a href="mailto:hello@hacktrent.example">hello@hacktrent.example</a>.
+            </p>
+        </section>
+    </main>
+
+    <!-- Complementary sidebar announced as a separate landmark -->
+    <aside class="right-bar" aria-labelledby="news-heading">
+        <h2 id="news-heading">Latest News</h2>
+        <ul class="news-list">
             <li>
-                <div class="news"><img
-                        src="/assets/HackTrent2025.jpg"
-                        width="100px">
-                    <div><a href="#image">HackTrent2025 Recap</a>
-                        <p>November 15, 2025</p>
+                <article class="news">
+                    <img src="./assets/HackTrent2025.jpg"
+                         alt="Crowd of participants at the HackTrent 2025 opening ceremony"
+                         width="100" height="75">
+                    <div>
+                        <a href="#image">HackTrent 2025 Recap</a>
+                        <p><time datetime="2025-11-15">November 15, 2025</time></p>
                     </div>
-                </div>
+                </article>
             </li>
         </ul>
-    </section>
+    </aside>
 
-    <section class="foot">
-        <span>© 2026 HackTrent. All rights reserved.</span>
-        <span><a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Use</a> | <a
-                href="#accessibility">Accessibility</a></span>
-    </section>
+    <footer class="foot">
+        <p>© 2026 HackTrent. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><a href="#terms">Terms of Use</a></li>
+            <li><a href="#accessibility">Accessibility</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        // Text-size controls (keyboard operable, persists while on the page)
+        (function () {
+            var size = 100;
+            var root = document.documentElement;
+            function apply() { root.style.fontSize = size + "%"; }
+            document.getElementById("text-larger").addEventListener("click", function () {
+                size = Math.min(size + 10, 150); apply();
+            });
+            document.getElementById("text-smaller").addEventListener("click", function () {
+                size = Math.max(size - 10, 80); apply();
+            });
+        })();
+    </script>
 </body>
-
 
 </html>
