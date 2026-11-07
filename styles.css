@@ -1257,3 +1257,46 @@ thead th {
 .eyebrow { display: block; }
 .eyebrow:has(.eyebrow-num) { display: flex; }
 .eyebrow-num { margin-right: 0.1rem; }
+
+/* ---------- Round 6 polish ---------- */
+
+/* Balanced headings and orphan-free paragraphs where the browser supports it */
+h1, h2, h3, .hero-lead, .band-lead { text-wrap: balance; }
+p, li, td { text-wrap: pretty; }
+
+/* A short accent rule under each section title ties the sections together */
+.band > .band-inner > h2::after,
+.band > .band-inner > div > h2::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 5px;
+    margin-top: 0.55rem;
+    background: var(--accent);
+    border: 1.5px solid var(--accent-ink);
+    border-radius: 3px;
+}
+
+/* Tinted bands get crisp edges so the rhythm reads at a glance */
+.band-tinted {
+    border-top: 2px solid var(--line);
+    border-bottom: 2px solid var(--line);
+}
+
+/* News photo keeps a tidy 4:3 crop whatever the card width */
+.news-card img {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+/* Softer, more generous rhythm inside the about copy */
+.prose p + p { margin-top: 0.2rem; }
+.check-list { margin-top: 1.8rem; }
+
+/* Hero lead gets a touch more room from the kicker */
+.hero h1 { margin-top: 0.3rem; }
+
+@media (forced-colors: active) {
+    .band > .band-inner > h2::after,
+    .band > .band-inner > div > h2::after { background: CanvasText; border-color: CanvasText; }
+}
