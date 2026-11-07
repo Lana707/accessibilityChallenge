@@ -1,9 +1,13 @@
 /* HackTrent — accessibility behaviours
    1. Text size:   smaller / reset / larger, announced and remembered
    2. Theme:       light/dark switch (role=switch), follows system by default
-   3. Navigation:  in-page links move keyboard focus; aria-current tracks section
-   4. Search:      real results panel, focus moves to it, announced
-   5. Form:        GOV.UK-style error summary + inline errors + success status
+   3. Navigation:  in-page links move keyboard focus to the target heading;
+                   aria-current tracks the section in view
+   4. Find:        in-page results panel, focus moves to it, closes on Escape
+                   or when focus leaves it
+   5. Form:        error summary that links to each field, inline errors,
+                   success announced by a status region
+   6. Table:       scroll wrapper is a tab stop only when it actually overflows
 */
 (function () {
     "use strict";
@@ -13,7 +17,6 @@
 
     function announce(message) {
         if (!announcer) return;
-        // Clear first so repeating the same message is still read out
         announcer.textContent = "";
         window.setTimeout(function () { announcer.textContent = message; }, 50);
     }
@@ -26,29 +29,52 @@
         try { return localStorage.getItem(key); } catch (e) { return null; }
     }
 
+    /* Move focus to the most useful element inside a target: its heading if it
+       has one, otherwise the target itself. Headings get tabindex=-1 on demand. */
+    function focusTarget(target) {
+        if (!target) return;
+        var el = target.matches("h1, h2, h3, main, input, textarea, button") ? target
+               : target.querySelector("h1, h2, h3") || target;
+        if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
+        // The browser's own hash navigation can blur whatever we focus, so focus
+        // after it has run (next frame) and once more shortly after as a guard.
+        requestAnimationFrame(function () { el.focus({ preventScroll: true }); });
+        window.setTimeout(function () {
+            if (document.activeElement !== el) el.focus({ preventScroll: true });
+        }, 120);
+    }
+
     /* ---------- 1. Text size ---------- */
     var MIN = 80, MAX = 160, STEP = 10;
     var size = parseInt(read("hacktrent-text-size"), 10);
     if (isNaN(size) || size < MIN || size > MAX) size = 100;
 
+    var smaller = document.getElementById("text-smaller");
+    var larger = document.getElementById("text-larger");
+
     function applySize(say) {
         root.style.fontSize = size + "%";
-        store("hacktrent-text-size", String(size));
-        var smaller = document.getElementById("text-smaller");
-        var larger = document.getElementById("text-larger");
-        if (smaller) smaller.disabled = size <= MIN;
-        if (larger) larger.disabled = size >= MAX;
-        if (say) announce("Text size " + size + " percent");
+        // aria-disabled keeps the button focusable, so focus is never dropped
+        if (smaller) smaller.setAttribute("aria-disabled", String(size <= MIN));
+        if (larger) larger.setAttribute("aria-disabled", String(size >= MAX));
+        if (say) {
+            store("hacktrent-text-size", String(size));
+            announce("Text size " + size + " percent");
+        }
     }
 
-    function bind(id, handler) {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener("click", handler);
+    function bindSize(el, delta) {
+        if (!el) return;
+        el.addEventListener("click", function () {
+            if (el.getAttribute("aria-disabled") === "true") return;
+            size = delta === 0 ? 100 : Math.min(MAX, Math.max(MIN, size + delta));
+            applySize(true);
+        });
     }
 
-    bind("text-larger", function () { size = Math.min(size + STEP, MAX); applySize(true); });
-    bind("text-smaller", function () { size = Math.max(size - STEP, MIN); applySize(true); });
-    bind("text-reset", function () { size = 100; applySize(true); });
+    bindSize(larger, STEP);
+    bindSize(smaller, -STEP);
+    bindSize(document.getElementById("text-reset"), 0);
     applySize(false);
 
     /* ---------- 2. Theme switch ---------- */
@@ -62,7 +88,9 @@
     }
 
     function renderSwitch() {
-        if (themeBtn) themeBtn.setAttribute("aria-checked", String(isDark()));
+        var dark = isDark();
+        root.setAttribute("data-dark", String(dark));
+        if (themeBtn) themeBtn.setAttribute("aria-checked", String(dark));
     }
 
     if (themeBtn) {
@@ -71,10 +99,8 @@
             var next = isDark() ? "light" : "dark";
             root.setAttribute("data-theme", next);
             store("hacktrent-theme", next);
-            renderSwitch();
-            announce(next === "dark" ? "Dark mode on" : "Dark mode off");
+            renderSwitch();   // the switch's own state change is what screen readers announce
         });
-        // If the user never chose, keep following the system setting
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderSwitch);
     }
 
@@ -84,13 +110,16 @@
             var id = link.getAttribute("href").slice(1);
             var target = id ? document.getElementById(id) : null;
             if (!target) return;
-            requestAnimationFrame(function () {
-                target.focus({ preventScroll: true });
-            });
+            // Open a closed disclosure if the link points at one
+            if (target.tagName === "DETAILS") {
+                target.open = true;
+                focusTarget(target.querySelector("summary"));
+                return;
+            }
+            focusTarget(target);
         });
     });
 
-    // Mark the section in view in the main nav (aria-current="location")
     var navLinks = Array.prototype.slice.call(document.querySelectorAll(".site-nav a[href^='#']"));
     var watched = navLinks.map(function (a) {
         return document.getElementById(a.getAttribute("href").slice(1));
@@ -101,24 +130,23 @@
         var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting; });
             var current = watched.filter(function (s) { return visible[s.id]; })[0];
-            if (!current) return;
             navLinks.forEach(function (a) {
-                if (a.getAttribute("href") === "#" + current.id) {
+                if (current && a.getAttribute("href") === "#" + current.id) {
                     a.setAttribute("aria-current", "location");
                 } else {
                     a.removeAttribute("aria-current");
                 }
             });
-        }, { rootMargin: "-40% 0px -50% 0px" });
+        }, { rootMargin: "-30% 0px -55% 0px" });
         watched.forEach(function (s) { observer.observe(s); });
     }
 
-    /* ---------- 4. Search ---------- */
+    /* ---------- 4. Find on this page ---------- */
     var searchForm = document.getElementById("search-form");
     var panel = document.getElementById("search-results");
 
     if (searchForm && panel) {
-        var heading = document.getElementById("search-results-heading");
+        var title = document.getElementById("search-results-heading");
         var summaryEl = document.getElementById("search-results-summary");
         var list = document.getElementById("search-results-list");
         var input = document.getElementById("site-search");
@@ -126,10 +154,16 @@
         var pages = Array.prototype.slice.call(document.querySelectorAll("main section[id]"))
             .map(function (s) {
                 var h = s.querySelector("h1, h2");
-                return { id: s.id, title: h ? h.textContent.trim() : s.id, text: s.textContent.toLowerCase() };
+                var nav = navLinks.filter(function (a) { return a.getAttribute("href") === "#" + s.id; })[0];
+                return {
+                    id: s.id,
+                    title: nav ? nav.textContent.trim() : (h ? h.textContent.trim() : s.id),
+                    text: s.textContent.toLowerCase()
+                };
             });
 
         function closePanel(returnFocus) {
+            if (panel.hidden) return;
             panel.hidden = true;
             if (returnFocus && input) input.focus();
         }
@@ -138,7 +172,7 @@
             event.preventDefault();
             var q = input.value.trim();
             if (!q) {
-                announce("Enter a search term first.");
+                announce("Enter a word to find first.");
                 input.focus();
                 return;
             }
@@ -151,24 +185,29 @@
                 a.textContent = p.title;
                 a.addEventListener("click", function () {
                     closePanel(false);
-                    requestAnimationFrame(function () {
-                        var t = document.getElementById(p.id);
-                        if (t) t.focus({ preventScroll: true });
-                    });
+                    focusTarget(document.getElementById(p.id));
                 });
                 li.appendChild(a);
                 list.appendChild(li);
             });
             summaryEl.textContent = hits.length
-                ? hits.length + (hits.length === 1 ? " section matches " : " sections match ") + "“" + q + "”."
-                : "Nothing on this page matches “" + q + "”. Try “schedule” or “apply”.";
+                ? hits.length + (hits.length === 1 ? " section mentions " : " sections mention ") + "“" + q + "”."
+                : "Nothing on this page mentions “" + q + "”. Try “schedule” or “apply”.";
             panel.hidden = false;
-            heading.focus();
+            title.focus();
         });
 
         document.getElementById("search-close").addEventListener("click", function () { closePanel(true); });
-        panel.addEventListener("keydown", function (e) {
-            if (e.key === "Escape") closePanel(true);
+
+        function onEscape(e) { if (e.key === "Escape") closePanel(true); }
+        panel.addEventListener("keydown", onEscape);
+        searchForm.addEventListener("keydown", onEscape);
+
+        // Close quietly when keyboard focus leaves the panel and the field
+        panel.addEventListener("focusout", function (e) {
+            var next = e.relatedTarget;
+            if (next && (panel.contains(next) || searchForm.contains(next))) return;
+            closePanel(false);
         });
     }
 
@@ -196,32 +235,26 @@
             var name = document.getElementById("applicant-name");
             var email = document.getElementById("applicant-email");
             var agree = document.getElementById("agree");
-            var nameError = document.getElementById("name-error");
-            var emailError = document.getElementById("email-error");
-            var agreeError = document.getElementById("agree-error");
+            var fields = [
+                { input: name, error: document.getElementById("name-error") },
+                { input: email, error: document.getElementById("email-error") },
+                { input: agree, error: document.getElementById("agree-error") }
+            ];
             var errors = [];
 
-            setError(name, nameError, "");
-            setError(email, emailError, "");
-            setError(agree, agreeError, "");
+            fields.forEach(function (f) { setError(f.input, f.error, ""); });
             success.textContent = "";
 
-            if (!name.value.trim()) {
-                setError(name, nameError, "Enter your full name.");
-                errors.push({ input: name, text: "Enter your full name" });
+            function fail(f, message) {
+                setError(f.input, f.error, message);
+                errors.push({ input: f.input, text: message });   // same wording in both places
             }
+
+            if (!name.value.trim()) fail(fields[0], "Enter your full name.");
             var emailValue = email.value.trim();
-            if (!emailValue) {
-                setError(email, emailError, "Enter your email address.");
-                errors.push({ input: email, text: "Enter your email address" });
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
-                setError(email, emailError, "Enter an email address in the format name@example.com.");
-                errors.push({ input: email, text: "Enter a valid email address" });
-            }
-            if (!agree.checked) {
-                setError(agree, agreeError, "Tick the box to agree to the code of conduct.");
-                errors.push({ input: agree, text: "Agree to the code of conduct" });
-            }
+            if (!emailValue) fail(fields[1], "Enter your email address.");
+            else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) fail(fields[1], "Enter an email address in the format name@example.com.");
+            if (!agree.checked) fail(fields[2], "Tick the box to agree to the code of conduct.");
 
             if (errors.length) {
                 summary.innerHTML = "";
@@ -245,7 +278,7 @@
                 });
                 summary.appendChild(ul);
                 summary.hidden = false;
-                summary.focus();
+                summary.focus();   // focus reads the heading and list; no live region needed
             } else {
                 summary.hidden = true;
                 summary.innerHTML = "";
@@ -253,8 +286,23 @@
                 success.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>';
                 success.appendChild(document.createTextNode(
                     "Application submitted. Thank you! We'll email you a confirmation."));
-                success.focus();
+                // Status region announces the message; focus returns to the form heading
+                document.getElementById("apply-form-heading").focus();
             }
         });
+    }
+
+    /* ---------- 6. Table scroll wrapper ---------- */
+    var wrap = document.getElementById("schedule-table");
+    if (wrap) {
+        function updateWrap() {
+            if (wrap.scrollWidth > wrap.clientWidth + 1) {
+                wrap.setAttribute("tabindex", "0");
+            } else {
+                wrap.removeAttribute("tabindex");
+            }
+        }
+        updateWrap();
+        window.addEventListener("resize", updateWrap);
     }
 })();

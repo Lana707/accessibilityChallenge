@@ -45,7 +45,8 @@
     --line-strong: #a98bdf;
     --error: #ffb3ab;          /* 9.2:1 on surface */
     --success: #9ae6a0;
-    --plate-shadow: 6px 6px 0 #000000;
+    --line: #4a3e62;
+    --plate-shadow: 6px 6px 0 var(--line-strong);
     color-scheme: dark;
 }
 
@@ -65,7 +66,8 @@
         --line-strong: #a98bdf;
         --error: #ffb3ab;
         --success: #9ae6a0;
-        --plate-shadow: 6px 6px 0 #000000;
+        --line: #4a3e62;
+        --plate-shadow: 6px 6px 0 var(--line-strong);
         color-scheme: dark;
     }
 }
@@ -127,7 +129,11 @@ strong { font-weight: 700; }
     border: 0;
 }
 
-main:focus, section:focus, h2:focus, #accessibility:focus { outline: none; }
+/* Programmatic focus targets: no ring needed, they are not interactive */
+main:focus, h1:focus, h2:focus, h3:focus, .search-results-title:focus,
+.form-error-summary:focus { outline: none; }
+
+.form-error-summary:focus { outline: 3px solid var(--accent); outline-offset: 2px; }
 
 /* ---------- Focus: double ring visible on any background ---------- */
 a:focus-visible,
@@ -254,7 +260,7 @@ main a:hover, .foot a:hover { text-decoration-thickness: 3px; }
     color: #ffffff;
     font-weight: 700;
     text-decoration: none;
-    border: 2px solid rgba(255, 255, 255, 0.35);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 8px;
 }
 
@@ -267,7 +273,7 @@ main a:hover, .foot a:hover { text-decoration-thickness: 3px; }
 
 /* Current section: filled, offset shadow and a ribbon — not color alone */
 .site-nav a[aria-current] {
-    background: #1d0d38;
+    background: rgba(0, 0, 0, 0.35);
     border-color: var(--accent);
     box-shadow: 4px 4px 0 var(--accent);
 }
@@ -325,6 +331,11 @@ main a:hover, .foot a:hover { text-decoration-thickness: 3px; }
     cursor: pointer;
 }
 
+.header-tools button[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
 .header-tools button:hover {
     background: rgba(255, 255, 255, 0.12);
     border-color: #ffffff;
@@ -347,7 +358,7 @@ main a:hover, .foot a:hover { text-decoration-thickness: 3px; }
     width: 2.6rem;
     height: 1.4rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.4);
     border: 2px solid #ffffff;
 }
 
@@ -373,7 +384,7 @@ main a:hover, .foot a:hover { text-decoration-thickness: 3px; }
     background: var(--surface);
     color: var(--ink);
     border-top: 1px solid var(--line);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 0 var(--line-strong);
 }
 
 .search-results-inner {
@@ -382,8 +393,9 @@ main a:hover, .foot a:hover { text-decoration-thickness: 3px; }
     padding: 1.2rem 1.25rem 1.4rem;
 }
 
-.search-results h2 {
+.search-results-title {
     font-size: 1.4rem;
+    font-weight: 700;
     color: var(--heading);
 }
 
@@ -444,7 +456,8 @@ main a:hover, .foot a:hover { text-decoration-thickness: 3px; }
     margin-bottom: 1.2rem;
 }
 
-.hero h1 em {
+.hero-accent {
+    font-family: "Fraunces", Georgia, serif;
     font-style: italic;
     font-weight: 600;
     color: var(--accent);
@@ -488,10 +501,10 @@ main a.button-primary:visited {
     text-decoration: none;
 }
 
-.hero .button-primary { border-color: #120822; box-shadow: 4px 4px 0 #120822; }
+.hero .button-primary { border-color: var(--accent-ink); box-shadow: 4px 4px 0 var(--accent-ink); }
 
 .button-primary:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--accent-ink); }
-.hero .button-primary:hover { box-shadow: 6px 6px 0 #120822; }
+.hero .button-primary:hover { box-shadow: 6px 6px 0 var(--accent-ink); }
 .button-primary:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--accent-ink); }
 
 main a.button-ghost,
@@ -518,7 +531,7 @@ main a.button-ghost:visited {
     padding: 0.7rem;
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.6);
-    box-shadow: 8px 8px 0 #120822;
+    box-shadow: 8px 8px 0 var(--accent-ink);
 }
 
 .hero-plate img {
@@ -596,7 +609,7 @@ main a.button-ghost:visited {
     margin-bottom: 1rem;
 }
 
-.band p { margin-bottom: 1rem; max-width: 42em; }
+:where(.band) p { margin-bottom: 1rem; max-width: 42em; }
 .band-lead { font-size: 1.2rem; color: var(--ink-soft); }
 
 /* ---------- About ---------- */
@@ -635,12 +648,6 @@ main a.button-ghost:visited {
 :root[data-theme="dark"] .check-list li::before { border-color: var(--accent); }
 
 .news-card { padding: 1.4rem; }
-
-.news-card:hover,
-.fact:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0 var(--line-strong);
-}
 
 .news-card img {
     width: 100%;
@@ -765,6 +772,7 @@ details p { margin-top: 0.4rem; }
 }
 
 .choice label { cursor: pointer; padding: 0.35rem 0; }
+.choice label a { color: var(--link); }
 
 .form-error-summary {
     padding: 1rem 1.2rem;
@@ -843,7 +851,13 @@ tbody tr:nth-child(even) { background: var(--surface-2); }
 }
 
 .statement { padding: 1.8rem; }
-.statement h2 { font-size: 1.6rem; }
+.statement h3 {
+    font-size: 1.6rem;
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 800;
+    color: var(--heading);
+    margin-bottom: 0.8rem;
+}
 
 /* ---------- Footer ---------- */
 .foot {
@@ -871,7 +885,8 @@ tbody tr:nth-child(even) { background: var(--surface-2); }
 }
 
 .foot a,
-.foot details summary { color: #ffd166; }   /* 10:1 on brand-deep */
+.foot details summary { color: #ffd166; }
+.foot details p a { color: #ffd166; }   /* 10:1 on brand-deep */
 
 .back-to-top { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; }
 
@@ -882,14 +897,15 @@ tbody tr:nth-child(even) { background: var(--surface-2); }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
 /* ---------- Responsive ---------- */
+@media (max-width: 1280px) {
+    .site-header { position: static; }
+    html { scroll-padding-top: 1rem; }
+}
+
 @media (max-width: 960px) {
     .hero-inner, .about-grid, .apply-grid, .contact-grid { grid-template-columns: 1fr; }
     .facts dl { grid-template-columns: repeat(2, 1fr); }
     .hero { padding: 3rem 1.25rem 5rem; }
-
-    /* A sticky header would cover content when zoomed or on phones */
-    .site-header { position: static; }
-    html { scroll-padding-top: 1rem; }
 
     .header-inner { justify-content: center; }
     .site-nav ul { justify-content: center; }
@@ -903,22 +919,19 @@ tbody tr:nth-child(even) { background: var(--surface-2); }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-    }
+    html { scroll-behavior: auto; }
 
-    .button-primary:hover, .button-primary:active,
-    .news-card:hover, .fact:hover { transform: none; }
+    .button-primary:hover, .button-primary:active { transform: none; }
 }
 
 /* ---------- More contrast requested ---------- */
 @media (prefers-contrast: more) {
-    :root {
+    html:root {
         --ink-soft: var(--ink);
         --line: var(--line-strong);
     }
+
+    .switch-track { background: transparent; }
 
     .site-nav a, .header-tools button { border-color: #ffffff; }
 }
@@ -936,6 +949,10 @@ tbody tr:nth-child(even) { background: var(--surface-2); }
     .logo-hex { fill: CanvasText; }
     .logo-mark { stroke: Canvas; }
     .switch-track, .switch-thumb { forced-color-adjust: none; }
+    .switch-track { background: Canvas; border-color: ButtonText; }
+    .switch-thumb { background: ButtonText; }
+    .theme-switch[aria-checked="true"] .switch-track { background: Highlight; border-color: Highlight; }
+    .theme-switch[aria-checked="true"] .switch-thumb { background: HighlightText; }
 }
 
 /* ---------- Print ---------- */
@@ -947,3 +964,59 @@ tbody tr:nth-child(even) { background: var(--surface-2); }
     .plate, .fact { box-shadow: none; border: 1px solid #000000; }
     main a[href^="mailto"]::after { content: " (" attr(href) ")"; }
 }
+
+/* ---------- Focus rings must survive component shadows ---------- */
+.button-primary:focus-visible,
+main a.button-primary:focus-visible,
+.hero .button-primary:focus-visible {
+    box-shadow: 0 0 0 6px var(--brand-deep), 4px 4px 0 var(--accent-ink);
+    transform: none;
+}
+
+.site-nav a[aria-current]:focus-visible {
+    box-shadow: 0 0 0 6px var(--brand-deep), 4px 4px 0 var(--accent);
+}
+
+.table-wrap:focus-visible {
+    box-shadow: 0 0 0 6px var(--brand-deep), var(--plate-shadow);
+}
+
+/* ---------- Checkbox row keeps radio-row styling ---------- */
+.choice > label {
+    display: inline;
+    font-weight: 400;
+    margin: 0;
+}
+
+.choice.field { margin: 1.3rem 0 0.4rem; }
+
+/* ---------- Disabled state is visibly different ---------- */
+.button:disabled,
+.button[aria-disabled="true"],
+.header-tools button:disabled {
+    background: var(--surface-2);
+    color: var(--ink-soft);
+    border-color: var(--line);
+    box-shadow: none;
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* ---------- Standalone links get the 44px target too ---------- */
+.footer-links a,
+.search-results a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+}
+
+/* ---------- Tick position survives user line-height overrides ---------- */
+.check-list li::before {
+    top: 0.45em;
+    height: 0.95em;
+    width: 0.55em;
+}
+
+/* ---------- Schedule rows stay scannable in dark mode ---------- */
+:root[data-theme="dark"] th,
+:root[data-theme="dark"] td { border-top-color: var(--line); }
