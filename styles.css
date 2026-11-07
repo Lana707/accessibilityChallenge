@@ -18,6 +18,7 @@
     --brand-deep: #2c1452;     /* header, hero, footer */
     --accent: #ffc83d;         /* focus ring, highlights */
     --accent-ink: #221b2e;     /* text on accent, 12.1:1 */
+    --edge: #221b2e;           /* offset shadows and chip borders */
     --link: #4a21a3;           /* 9.4:1 on bg */
     --link-visited: #64399a;
     --line: #cbbde3;
@@ -47,6 +48,7 @@
     --success: #9ae6a0;
     --line: #4a3e62;
     --plate-shadow: 6px 6px 0 var(--line-strong);
+    --edge: var(--line-strong);
     color-scheme: dark;
 }
 
@@ -68,6 +70,7 @@
         --success: #9ae6a0;
         --line: #4a3e62;
         --plate-shadow: 6px 6px 0 var(--line-strong);
+        --edge: var(--line-strong);
         color-scheme: dark;
     }
 }
@@ -1309,4 +1312,80 @@ p, li, td { text-wrap: pretty; }
     tbody th { white-space: normal; }
     thead th { font-size: 0.8rem; }
     caption { font-size: 1.1rem; padding: 1rem 0.8rem 0.6rem; }
+}
+
+/* ==========================================================================
+   Final overrides — kept last so media rules always win over polish blocks
+   ========================================================================== */
+
+/* Edges that must stay visible on dark surfaces */
+.button-primary,
+main a.button-primary,
+main a.button-primary:visited { border-color: var(--edge); box-shadow: 4px 4px 0 var(--edge); }
+.button-primary:hover { box-shadow: 6px 6px 0 var(--edge); }
+.button-primary:active { box-shadow: 1px 1px 0 var(--edge); }
+.button-primary:focus-visible,
+main a.button-primary:focus-visible { box-shadow: 0 0 0 6px var(--brand-deep), 4px 4px 0 var(--edge); }
+.hero .button-primary { border-color: var(--accent-ink); box-shadow: 4px 4px 0 var(--accent-ink); }
+.hero .button-primary:hover { box-shadow: 6px 6px 0 var(--accent-ink); }
+.hero .button-primary:focus-visible { box-shadow: 0 0 0 6px var(--brand-deep), 4px 4px 0 var(--accent-ink); }
+.eyebrow-num { border-color: var(--edge); }
+
+/* One accent per section title: the chip. The bar becomes a quiet brand rule. */
+.band > .band-inner > h2::after,
+.band > .band-inner > div > h2::after { background: var(--brand); border: 0; height: 4px; border-radius: 2px; }
+
+/* Hero: calmer yellow budget, tag above the inner rule, no ring on small screens */
+.hero-plate figcaption { z-index: 1; background: var(--brand-deep); color: #ffffff; border-color: rgba(255, 255, 255, 0.6); }
+.table-wrap::after { display: none; }
+.table-wrap { padding-bottom: 0.4rem; }
+main > .band-tinted:last-child { border-bottom: 0; }
+
+@media (max-width: 960px) {
+    .hero { padding-bottom: 5.75rem; background:
+        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0) 0 0 / 26px 26px,
+        linear-gradient(140deg, #2c1452 0%, #3b1f66 50%, #5a2ca0 100%); }
+}
+
+@media (max-width: 480px) {
+    .band { padding: 3rem 1.25rem; }
+    .facts dl { grid-template-columns: 1fr; }
+    .apply-form .button-primary { margin-top: 1.4rem; }
+}
+
+/* Reduced motion, re-asserted last */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .button-primary:hover, .button-primary:active { transform: none; }
+    .choice input::before { transition: none; }
+}
+
+/* Forced colours, re-asserted last; switch state keyed on the pre-paint root attribute */
+@media (forced-colors: active) {
+    .fact, .plate, .button, .header-tools button { border: 2px solid CanvasText; }
+    .fact { border-width: 2px; }
+    .eyebrow-num, .hero-plate figcaption { border: 2px solid CanvasText; }
+    .band > .band-inner > h2::after,
+    .band > .band-inner > div > h2::after { background: CanvasText; }
+    .switch-track { background: Canvas; border-color: ButtonText; }
+    .switch-thumb { background: ButtonText; }
+    :root[data-dark="true"] .switch-track { background: Highlight; border-color: Highlight; }
+    :root[data-dark="true"] .switch-thumb { background: HighlightText; }
+}
+
+/* Print, re-asserted last */
+@media print {
+    .site-header, .skip-link, .hero-actions, .foot nav, .apply-form { display: none; }
+    body { background: #ffffff; color: #000000; font-size: 12pt; }
+    .hero { background: none; color: #000000; padding: 0 0 1rem; }
+    .hero h1, .hero-accent, .hero-lead, .eyebrow-light { color: #000000; }
+    .hero-plate figcaption { position: static; border: 0; background: none; color: #000000; }
+    .plate, .fact { box-shadow: none; border: 1px solid #000000; }
+    .plate::after { display: none; }
+    thead th { background: none; color: #000000; border-bottom: 2px solid #000000; }
+    .foot, .foot a, .foot details summary, .foot-details p { color: #000000; background: none; }
+    .eyebrow-num { border-color: #000000; }
+    .band > .band-inner > h2::after,
+    .band > .band-inner > div > h2::after { background: #000000; }
+    main a[href^="mailto"]::after { content: " (" attr(href) ")"; }
 }
