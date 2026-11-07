@@ -1300,3 +1300,13 @@ p, li, td { text-wrap: pretty; }
     .band > .band-inner > h2::after,
     .band > .band-inner > div > h2::after { background: CanvasText; border-color: CanvasText; }
 }
+
+/* On phones the schedule wraps instead of scrolling, so the caption is
+   never clipped and there is no sideways scroll anywhere on the page */
+@media (max-width: 600px) {
+    table { min-width: 0; }
+    th, td { padding: 0.7rem 0.6rem; }
+    tbody th { white-space: normal; }
+    thead th { font-size: 0.8rem; }
+    caption { font-size: 1.1rem; padding: 1rem 0.8rem 0.6rem; }
+}
