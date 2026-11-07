@@ -23,11 +23,20 @@ then visit http://localhost:8000.
 
 ## Results
 
-- **axe-core 4.10:** 0 violations in light and dark mode (WCAG 2.0 A/AA, 2.1 AA, 2.2 AA, best practice).
-- **Contrast:** every text pair meets AA; body text exceeds AAA (7:1). Error red is 7.6:1.
-- **Targets:** every control is at least 44 × 44 px.
-- **HTML:** valid structure, one `<h1>`, logical outline, 7 landmarks, no duplicate IDs.
-- **Weight:** images cut from 6.7 MB to 0.45 MB.
+| Check | Result |
+| --- | --- |
+| axe-core 4.10, WCAG 2.0 A/AA + 2.1 AA + 2.2 AA + best practice, **light mode** | 0 violations |
+| axe-core 4.10, same rules, **dark mode** | 0 violations |
+| Browser console on load | 0 errors, 0 missing resources |
+| Text contrast | Every pair AA; body text 14.6–15.4:1 (AAA); error text 7.6:1 |
+| Target size | Every control ≥ 44 × 44 px; checkboxes and radios 26 px |
+| Structure | Valid nesting, one `<h1>`, logical outline, no duplicate IDs, every `for` / `aria-*` / anchor resolves |
+| Reflow at 320 px, and at 320 px with 160% text | No horizontal scroll |
+| Keyboard walk (skip link, nav, find, text size, theme, form error and success, footer disclosures) | All reachable and operable; focus always visible and never lost |
+| Screen-reader transcript review | No duplicate announcements; headings, landmarks and controls all named |
+| Independent code reviews | 6 passes (ARIA, CSS contrast and reflow, live assets, design, screen reader, plain language): 70+ findings, all fixed |
+| Image weight | 6.7 MB → 0.45 MB |
+| Works without JavaScript | Yes: content, navigation, disclosures and native validation |
 
 Full report, including what was wrong with the original and how each POUR principle is met: **[ACCESSIBILITY.md](ACCESSIBILITY.md)**.
 
