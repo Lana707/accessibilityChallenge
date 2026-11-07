@@ -18,6 +18,13 @@ html {
     font-size: 100%;
 }
 
+/* Smooth scrolling only for users who have NOT asked for reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
 body {
     margin: 0;
     font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -28,6 +35,26 @@ body {
     display: grid;
     grid-template-columns: 230px minmax(0, 1fr) 260px;
     grid-template-rows: auto 1fr auto;
+}
+
+/* ---------- Visually hidden (screen-reader only) text ---------- */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Sections receive focus from in-page links; no ring needed on the
+   section itself (focus is programmatic, not interactive) */
+main:focus,
+section:focus {
+    outline: none;
 }
 
 /* ---------- Skip link: hidden until focused ---------- */
@@ -50,10 +77,19 @@ body {
 /* ---------- Visible focus for EVERY interactive element ---------- */
 a:focus-visible,
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+textarea:focus-visible {
     outline: 3px solid var(--accent);
     outline-offset: 3px;
     border-radius: 2px;
+}
+
+/* Comfortable touch/click targets (WCAG 2.5.8 and then some) */
+button,
+.site-nav a,
+.cta-button {
+    min-height: 44px;
+    min-width: 44px;
 }
 
 /* ---------- Header ---------- */
@@ -242,6 +278,136 @@ input:focus-visible {
     background-color: var(--brand);
 }
 
+/* ---------- Application form ---------- */
+.apply-form {
+    margin-top: 1.5em;
+    background: var(--brand-light);
+    border-radius: 12px;
+    padding: 1.5em;
+    max-width: 34rem;
+}
+
+.apply-form h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--brand-dark);
+    margin-bottom: 0.5em;
+}
+
+.field {
+    margin: 1.2em 0;
+    border: 0;
+    padding: 0;
+}
+
+.field label,
+.field legend {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.35em;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffff;
+    color: var(--ink);
+    border: 2px solid var(--brand);
+    border-radius: 6px;
+    padding: 0.55em 0.7em;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.field input.has-error,
+.field textarea.has-error {
+    border-color: #ba1a1a;
+}
+
+.req {
+    color: #ba1a1a;
+    font-weight: 700;
+}
+
+.field-hint {
+    font-size: 0.95rem;
+    color: #4b4453;
+    margin-top: 0.35em;
+}
+
+/* Error text: red PLUS "Error:" prefix, never color alone */
+.field-error {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ba1a1a;
+    margin-top: 0.35em;
+}
+
+.field-error:empty {
+    display: none;
+}
+
+.radio-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0.4em 0;
+}
+
+.radio-row input {
+    width: 1.3em;
+    height: 1.3em;
+    accent-color: var(--brand-dark);
+}
+
+.radio-row label {
+    margin: 0;
+    font-weight: 400;
+}
+
+.form-error-summary {
+    background: #ffffff;
+    border: 3px solid #ba1a1a;
+    border-radius: 8px;
+    padding: 1em 1.2em;
+    margin-bottom: 1em;
+}
+
+.form-error-summary p {
+    font-weight: 700;
+    color: #ba1a1a;
+    margin-bottom: 0.4em;
+}
+
+.form-error-summary ul {
+    margin: 0;
+    padding-left: 1.4em;
+}
+
+.form-error-summary a {
+    color: #ba1a1a;
+}
+
+.form-success {
+    margin-top: 1em;
+    font-weight: 700;
+    color: #1b5e20;
+}
+
+.form-success:empty {
+    display: none;
+}
+
+.apply-form .cta-button {
+    border: 0;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+}
+
 /* ---------- Schedule table ---------- */
 table {
     border-collapse: collapse;
@@ -376,5 +542,100 @@ tbody tr:nth-child(even) td {
         animation: none !important;
         transition: none !important;
         scroll-behavior: auto !important;
+    }
+}
+
+/* ---------- Dark mode: follows the system preference ---------- */
+@media (prefers-color-scheme: dark) {
+    /* Headings keep contrast on the dark background */
+    .content h2,
+    .right-bar h2,
+    .apply-form h3,
+    caption {
+        color: #cdb9f2;
+    }
+
+    :root {
+        --brand-dark: #241440;
+        --brand: #4a2585;
+        --brand-light: #2a2138;
+        --ink: #ece6f2;
+        --paper: #17121f;
+        --accent: #ffd166;
+        --link: #c7b3ff;
+        --link-visited: #d9c7f0;
+    }
+
+    .search input,
+    .field input[type="text"],
+    .field input[type="email"],
+    .field textarea {
+        background: #241e30;
+        color: var(--ink);
+        border-color: #8a6fc4;
+    }
+
+    .news,
+    .form-error-summary {
+        background: #241e30;
+    }
+
+    .news time,
+    .news p,
+    .field-hint {
+        color: #c3bacf;          /* 8.5:1 on #241e30 */
+    }
+
+    tbody tr:nth-child(even) td {
+        background-color: #221b2e;
+    }
+
+    tbody th {
+        background-color: var(--brand-light);
+    }
+
+    th, td {
+        border-color: #5d4a80;
+    }
+
+    .field-error,
+    .req,
+    .form-error-summary p,
+    .form-error-summary a {
+        color: #ffb3ab;
+    }
+
+    .form-error-summary {
+        border-color: #ffb3ab;
+    }
+
+    .form-success {
+        color: #9ae6a0;
+    }
+
+    .text-size button {
+        background: #241e30;
+        color: var(--ink);
+        border-color: #8a6fc4;
+    }
+}
+
+/* ---------- Windows High Contrast / forced-colors mode ---------- */
+@media (forced-colors: active) {
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+        outline: 3px solid Highlight;
+    }
+
+    .site-nav a[aria-current="page"] {
+        border: 2px solid Highlight;
+    }
+
+    .cta-button,
+    .search button,
+    .text-size button {
+        border: 2px solid ButtonText;
     }
 }
