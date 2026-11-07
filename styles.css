@@ -636,6 +636,12 @@ main a.button-ghost:visited {
 
 .news-card { padding: 1.4rem; }
 
+.news-card:hover,
+.fact:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--line-strong);
+}
+
 .news-card img {
     width: 100%;
     height: auto;
@@ -751,8 +757,8 @@ details p { margin-top: 0.4rem; }
 }
 
 .choice input {
-    width: 1.4rem;
-    height: 1.4rem;
+    width: 1.6rem;              /* 25.6px: clears the 24px target minimum */
+    height: 1.6rem;
     min-height: 0;
     accent-color: var(--brand);
     flex-shrink: 0;
@@ -903,7 +909,8 @@ tbody tr:nth-child(even) { background: var(--surface-2); }
         scroll-behavior: auto !important;
     }
 
-    .button-primary:hover, .button-primary:active { transform: none; }
+    .button-primary:hover, .button-primary:active,
+    .news-card:hover, .fact:hover { transform: none; }
 }
 
 /* ---------- More contrast requested ---------- */

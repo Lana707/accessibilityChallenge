@@ -253,7 +253,6 @@
                 success.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>';
                 success.appendChild(document.createTextNode(
                     "Application submitted. Thank you! We'll email you a confirmation."));
-                success.focus && success.setAttribute("tabindex", "-1");
                 success.focus();
             }
         });
